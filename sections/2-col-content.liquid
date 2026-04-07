@@ -1,0 +1,259 @@
+{%-liquid
+  assign ss = section.settings
+  assign sb = section.blocks
+-%}
+{{ '2ColContent.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large">
+  <div class="_2ColContent">
+    {% if ss.title != blank %}
+      <{{ ss.titleTag }} class="_2ColContent__title">
+        {{ ss.title }}
+      </{{ ss.titleTag }}>
+    {% endif %}
+    <div class="_2ColContent__content">
+      {% if ss.content != blank %}
+        <p class="_2ColContent__subTitle">
+          {{ ss.content }}
+        </p>
+      {% endif %}
+
+      {% if ss.btnText != blank and ss.btnLink != blank %}
+        <a href="{{ ss.btnLink }}" class="bestProducts__item__btn newHomeBtn">
+          <span>
+            {{ ss.btnText }}
+          </span>
+          <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.3333 5.5L20 12.5M20 12.5L13.3333 19.5M20 12.5L4 12.5" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{%- capture getStyles -%}
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ ss.secMarginTop_desktop | append: 'px' }};
+    margin-bottom: {{ ss.secMarginBottom_desktop | append: 'px' }};
+
+    padding-top: {{ ss.secPaddingTop_desktop | append: 'px' }};
+    padding-bottom: {{ ss.secPaddingBottom_desktop | append: 'px' }};
+  }
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ ss.secMarginTop_tab | append: 'px' }};
+      margin-bottom: {{ ss.secMarginBottom_tab | append: 'px' }};
+
+      padding-top: {{ ss.secPaddingTop_tab | append: 'px' }};
+      padding-bottom: {{ ss.secPaddingBottom_tab | append: 'px' }};
+    }
+  }
+  @media (max-width: 600px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ ss.secMarginTop_mobile | append: 'px' }};
+      margin-bottom: {{ ss.secMarginBottom_mobile | append: 'px' }};
+
+      padding-top: {{ ss.secPaddingTop_mobile | append: 'px' }};
+      padding-bottom: {{ ss.secPaddingBottom_mobile | append: 'px' }};
+    }
+  }
+{%- endcapture -%}
+<style>
+  {{ getStyles }}
+</style>
+
+
+{% schema %}
+{
+  "name": "2 Cols Content",
+  "class": "can-be-fullwidth merged-section supports-absolute-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Print on Any Product with DTF Transfers"
+    },
+    {
+      "type": "select",
+      "id": "titleTag",
+      "label": "Title Tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "Heading 1"
+        },
+        {
+          "value": "h2",
+          "label": "Heading 2"
+        },
+        {
+          "value": "h3",
+          "label": "Heading 3"
+        },
+        {
+          "value": "h4",
+          "label": "Heading 4"
+        },
+        {
+          "value": "h5",
+          "label": "Heading 5"
+        },
+        {
+          "value": "h6",
+          "label": "Heading 6"
+        }
+      ]
+    },
+    {
+      "type": "inline_richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "Explore our range of DTF products and find the perfect fit for your needs."
+    },
+    {
+      "type": "text",
+      "id": "btnText",
+      "label": "Button Text",
+      "default": "Shop Transfers By Size"
+    },
+    {
+      "type": "url",
+      "id": "btnLink",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Section Margins"
+    },
+    {
+      "type": "range",
+      "id": "secMarginTop_desktop",
+      "label": "Margin Top Desktop",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secMarginTop_tab",
+      "label": "Margin Top Tablet",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secMarginTop_mobile",
+      "label": "Margin Top Mobile",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secMarginBottom_desktop",
+      "label": "Margin Bottom Desktop",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secMarginBottom_tab",
+      "label": "Margin Bottom Tablet",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secMarginBottom_mobile",
+      "label": "Margin Bottom Mobile",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Paddings"
+    },
+    {
+      "type": "range",
+      "id": "secPaddingTop_desktop",
+      "label": "Padding Top Desktop",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secPaddingTop_tab",
+      "label": "Padding Top Tablet",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secPaddingTop_mobile",
+      "label": "Padding Top Mobile",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secPaddingBottom_desktop",
+      "label": "Padding Bottom Desktop",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secPaddingBottom_tab",
+      "label": "Padding Bottom Tablet",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "secPaddingBottom_mobile",
+      "label": "Padding Bottom Mobile",
+      "unit": "px",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "2 Cols Content"
+    }
+  ]
+}
+{% endschema %}

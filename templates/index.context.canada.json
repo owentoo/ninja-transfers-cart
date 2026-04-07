@@ -1,0 +1,74 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "index.json",
+  "context": {
+    "market": "canada"
+  },
+  "sections": {
+    "ss_hero_15_QrCkrw": {
+      "settings": {},
+      "blocks": {
+        "heading_Ked383": {
+          "settings": {
+            "heading": "<h1>DTF Transfers Trusted by 125,000+<br/><em>Make More for Less</em></h1>"
+          }
+        },
+        "text_eYgJrn": {
+          "settings": {
+            "text": "<p>Print ANY Design on ANY Product, Material or Color with 100+ Wash Durability</p><p>✔ 100% Satisfaction ✔ No Minimums or Art Fees ✔ Free & Fast Delivery</p>"
+          }
+        }
+      }
+    },
+    "new_hero_WaRfPG": {
+      "settings": {},
+      "blocks": {
+        "slide_mJdtgH": {
+          "settings": {
+            "title": "Canada's Trusted DTF Transfers\n<br><em>Make More for Less</em>",
+            "image": "shopify://shop_images/Synthwave-Hero-Canada_c57954d1-1744-4830-9aba-4084ed631667.png"
+          }
+        }
+      }
+    },
+    "block_content_TRgERH": {
+      "settings": {},
+      "blocks": {
+        "item_fxLKPW": {
+          "settings": {
+            "content": "Get your orders to Canada quickly with our reliable, super fast shipping and delivery service."
+          }
+        }
+      }
+    },
+    "text_columns_images_mCMNp3": {
+      "settings": {},
+      "blocks": {
+        "image_E4DLdJ": {
+          "settings": {
+            "image": "shopify://shop_images/dtf-transfers-file-upload-canada.png"
+          }
+        },
+        "image_4aXLLA": {
+          "settings": {
+            "image": "shopify://shop_images/direct-to-film-transfers-print-and-ship-canada.png",
+            "title": "We Print & Ship within 24-48 hours"
+          }
+        },
+        "image_wCf3Hg": {
+          "settings": {
+            "image": "shopify://shop_images/your-design-here-dtf-heatpress-canada.png"
+          }
+        }
+      }
+    }
+  }
+}

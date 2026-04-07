@@ -1,0 +1,122 @@
+<div id="mobile-sticky-wrapper">
+  <button id="mobile-sticky-upload">
+    Upload Your First File
+  </button>
+</div>
+
+<style>
+
+    #mobile-sticky-wrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  padding: 10px 15px;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  z-index: 9999;
+  box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.18);
+}
+
+#mobile-sticky-wrapper.show {
+  transform: translateY(0);
+}
+
+#mobile-sticky-upload {
+      width: 100%; 
+    border-radius: 8px;
+    border: none;
+    background: #07A7F2;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 13px 10px;
+}
+
+@media (min-width: 768px) {
+  #mobile-sticky-wrapper {
+    display: none;
+  }
+}
+ 
+
+ </style>   
+<script>
+(function () {
+  const wrapper = document.getElementById("mobile-sticky-wrapper");
+  const btn = document.getElementById("mobile-sticky-upload");
+  const uploadControls = document.querySelector("upload-controls");
+  const masterUpload = document.querySelector("master-upload");
+  const anotherUpload = document.querySelector("another-upload");
+
+  if (!wrapper || !btn || !uploadControls) return;
+
+  const OFFSET = 120; // extra offset so it hides earlier
+  let firstFileUploaded = false;
+
+  /* -------------------------
+     VISIBILITY LOGIC
+  -------------------------- */
+  function toggleSticky() {
+    const rect = uploadControls.getBoundingClientRect();
+
+    const uploadVisible =
+      rect.top < window.innerHeight - OFFSET &&
+      rect.bottom > OFFSET;
+
+    if (uploadVisible) {
+      wrapper.classList.remove("show");
+    } else {
+      wrapper.classList.add("show");
+    }
+  }
+
+  window.addEventListener("scroll", toggleSticky);
+  window.addEventListener("resize", toggleSticky);
+  toggleSticky();
+
+  /* -------------------------
+     CLICK HANDLER
+  -------------------------- */
+  btn.addEventListener("click", () => {
+    if (masterUpload && !masterUpload.classList.contains("hidden")) {
+      masterUpload.click();
+    } else if (anotherUpload) {
+      anotherUpload.click();
+    }
+  });
+
+  /* -------------------------
+     FIRST FILE UPLOAD DETECT
+     (HOOK INTO FILE INPUT)
+  -------------------------- */
+  const fileInput = document.querySelector("#fileInput");
+
+  if (fileInput) {
+    fileInput.addEventListener("change", () => {
+      if (!firstFileUploaded && fileInput.files.length) {
+        firstFileUploaded = true;
+
+        // Update button text
+        btn.textContent = "Upload Another File";
+
+        // Scroll back to upload-controls
+        const top =
+          uploadControls.getBoundingClientRect().top +
+          window.pageYOffset -
+          80;
+
+        window.scrollTo({
+          top,
+          behavior: "smooth"
+        });
+      }
+    });
+  }
+})();
+
+</script>
+
+

@@ -1,0 +1,288 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "addBadge": ""
+          }
+        },
+        "yotpo_product_photo_reviews_star_rating_8JmXmU": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "price": {
+          "type": "price",
+          "disabled": true,
+          "settings": {}
+        },
+        "d32afbee-b144-4413-9482-e8be29f56885": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>FREE</strong></p>",
+            "text_size": "text-size--large",
+            "text_style": "text-color--primary",
+            "text_color": "rgba(0,0,0,0)",
+            "text_transform": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "product_data_src": "cms",
+            "product_description_truncated": "full"
+          }
+        },
+        "8c6e679b-fa45-4a68-93c9-acea1712a673": {
+          "type": "customBadgesPlace",
+          "settings": {}
+        },
+        "d7b31c47-f28e-4bda-b123-a99f0529e167": {
+          "type": "customBadgesItem",
+          "settings": {
+            "icon": "shopify://shop_images/video_100x_2ead3bc1-840e-4361-b9ba-6acabf361f03.svg",
+            "showStepOn": "beforeUpload",
+            "title": "Transfers - Press on Anything",
+            "link": "",
+            "popupShow": true,
+            "modalTitle": "",
+            "modalDetail_1": "",
+            "modalDetail": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/-gUNag-HWYU?si=SJ9PHmIvBMIVqDeF\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>",
+            "modalBullets": "",
+            "popupWidth": 620
+          }
+        },
+        "eb8ab4c8-3f1d-4ab8-ad5a-a2e474207dc4": {
+          "type": "customBadgesItem",
+          "settings": {
+            "icon": "shopify://shop_images/video_100x_2ead3bc1-840e-4361-b9ba-6acabf361f03.svg",
+            "showStepOn": "beforeUpload",
+            "title": "UV - Apply to Any Hard Surface",
+            "link": "",
+            "popupShow": true,
+            "modalTitle": "",
+            "modalDetail_1": "",
+            "modalDetail": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Jyk-ehg2YuE?si=z1axP00T0AuVqhV0\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>",
+            "modalBullets": "",
+            "popupWidth": 620
+          }
+        },
+        "c447d48f-60a9-43cf-a3de-b59955de0420": {
+          "type": "customSeparator",
+          "settings": {
+            "marginTop": 0,
+            "marginBottom": 15
+          }
+        },
+        "6dfb9b38-b4fd-4eb3-9b7b-99af173174b8": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Free U.S. Shipping on Orders Over $99</p>",
+            "text_size": "text-size--small",
+            "text_style": "text-color--primary",
+            "text_color": "rgba(0,0,0,0)",
+            "text_transform": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "heading": "Tell Us About Yourself",
+            "variants_style": "select",
+            "color_swatches": true,
+            "style": "none",
+            "unavailable_variants": "show",
+            "msg_option1": "",
+            "color_option1": "#40abdf",
+            "msg_option2": "",
+            "color_option2": "#e89839",
+            "trigger_option2": "",
+            "msg_option3": "",
+            "color_option3": "#40abdf"
+          }
+        },
+        "sample_questions_LEjUpF": {
+          "type": "sampleQuestions",
+          "settings": {
+            "heading": "Tell Us About Yourself",
+            "q__1": "What will you be using our transfers for?",
+            "option__1": "Personal\nProfit",
+            "property__1": "_Question 1",
+            "q__2": "What do you use to apply your transfers?",
+            "option__2": "Heat Press\nHandheld Press (like Cricut)\nHousehold Iron",
+            "property__2": "_Question 2",
+            "q__3": "Where do you buy your blank apparel?",
+            "option__3": "Large Industry Distributor\nOther Website",
+            "property__3": "_Question 3",
+            "q__4": "How would you best describe yourself?",
+            "option__4": "Maker/Crafter\nSide Hustler/Work From Home\nI use for my business in the custom printing industry\nI use for my business outside the custom printing industry",
+            "property__4": "_Question 4"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "allow2ndFiletoDrop": false,
+            "allowAnotherTransfer": false,
+            "allowAnotherTransfer__label": "Another Transfer",
+            "fillAnotherTransferBtn": true,
+            "fullWidthButtons": true,
+            "buttonText": "",
+            "afterAddtoCart_goCart": false,
+            "anotherTransferPosition": "above",
+            "show_quantity_selector": false,
+            "showQty": "false",
+            "setupText": "No Setup or Art Fees",
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false,
+            "show_price": false,
+            "style": "none",
+            "enable_payment_terms": true,
+            "reward_msg": false,
+            "reward_popup_title": "",
+            "reward_popup_msg": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {}
+        },
+        "036d9bb1-5f93-4a53-b9c8-01647b49e3c3": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Product Details",
+            "content": "{{ product.metafields.custom.product_details | metafield_tag }}",
+            "page": "",
+            "hide_block_if": false
+          }
+        },
+        "0d200ec9-dd1f-40f5-a9eb-060863a1cba4": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Specs & Features",
+            "content": "{{ product.metafields.custom.specs_features | metafield_tag }}",
+            "page": "",
+            "hide_block_if": false
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "yotpo_product_photo_reviews_star_rating_8JmXmU",
+        "price",
+        "d32afbee-b144-4413-9482-e8be29f56885",
+        "description",
+        "8c6e679b-fa45-4a68-93c9-acea1712a673",
+        "d7b31c47-f28e-4bda-b123-a99f0529e167",
+        "eb8ab4c8-3f1d-4ab8-ad5a-a2e474207dc4",
+        "c447d48f-60a9-43cf-a3de-b59955de0420",
+        "6dfb9b38-b4fd-4eb3-9b7b-99af173174b8",
+        "variant_picker",
+        "sample_questions_LEjUpF",
+        "buy_buttons",
+        "share",
+        "036d9bb1-5f93-4a53-b9c8-01647b49e3c3",
+        "0d200ec9-dd1f-40f5-a9eb-060863a1cba4"
+      ],
+      "settings": {
+        "newStyleUpload": true,
+        "gallery_layout": "one-col slider",
+        "gallery_desktop_width": "one-half",
+        "gallery_mobile_width": 100,
+        "gallery_aspect_ratio": "1",
+        "gallery_fit": true,
+        "gallery_padding": 0,
+        "gallery_background": "rgba(0,0,0,0)",
+        "gallery_border": "rgba(0,0,0,0)",
+        "border_radius": 0,
+        "show_thumbnails": true,
+        "enable_zoom": false,
+        "enable_video_looping": false,
+        "youtube_video": "",
+        "title_class": "",
+        "secondary_cta_class": "",
+        "default_to_first_variant": true,
+        "hideVariantImages": false,
+        "style": "primary"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "blocks": {
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "product_link": {
+          "type": "product_link",
+          "settings": {
+            "button_label": "View product"
+          }
+        }
+      },
+      "block_order": [
+        "price",
+        "title",
+        "product_link"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "Recommended",
+        "subheading": "You may also <strong>like</strong> these products",
+        "section_heading_size": "text-size--regular",
+        "section_heading_layout": "section-heading--left section-heading--one-row",
+        "gutter_decrease": false
+      }
+    },
+    "17089811185e32f53e": {
+      "type": "apps",
+      "blocks": {
+        "yotpo_product_photo_reviews_reviews_xAB33t": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{product}}"
+          }
+        }
+      },
+      "block_order": [
+        "yotpo_product_photo_reviews_reviews_xAB33t"
+      ],
+      "settings": {
+        "full_width": false,
+        "remove_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations",
+    "17089811185e32f53e"
+  ]
+}

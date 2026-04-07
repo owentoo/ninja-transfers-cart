@@ -1,0 +1,286 @@
+<div id="AjaxCartSubtotal">
+
+	{%- if type == 'page' -%}
+
+      {%liquid
+        assign disvalue = 0
+        for dis in cart.cart_level_discount_applications
+          assign discount_n = dis.total_allocated_amount | times : 1
+          assign disvalue = disvalue | plus : discount_n
+        endfor
+        assign bysizediscount = disvalue
+      %}
+      {% assign localzone = localization.country.iso_code %}
+      
+      {% case localzone %}
+        {% when "CA" %}
+         {% assign bySize_freeShipping_amount = settings.bySize_freeShipping_amount_ca %}
+          {% assign nwprice = bySize_freeShipping_amount | prepend : "$" %}
+          {% assign nwprice = nwprice | append : " CAD" %}
+        {% else %}
+         {% assign bySize_freeShipping_amount = settings.bySize_freeShipping_amount %}
+         {% assign nwprice = bySize_freeShipping_amount | prepend : "$" %}
+      {% endcase %}
+      
+		{%- if settings.cart_free_shipping -%}
+          <div class="sidebar-widget sidebar-widget--outline gutter-regular margin-bottom--regular">
+            <div class="sidebar-widget__content">
+              <shipping-notice
+                data-free-shipping="{{ settings.cart_free_shipping_amount | times: 100 }}"
+                data-cart-total="{{ cart.total_price }}"
+              >
+                <span data-js-free-shipping-text></span>
+                <span class="cart-notice__slider">
+                  <span class="cart-notice__slider-bar" data-js-free-shipping-slider></span>
+                </span>
+              </shipping-notice>
+              <script src="{{ 'component-shipping-notice.js' | asset_url }}" defer></script>
+            </div>
+          </div>
+		{%- endif -%}
+
+        {%-liquid
+			assign bySizeTotal = 0
+			assign blanksTotal = 0
+			assign isBySizeAvailable = false
+			assign isBlankAvailable = false
+			for item in cart.items
+				if item.product.type == 'custom transfers' or item.product.type == 'custom transfers gang' or item.product.type == 'spangles' or item.product.type == 'UV DTF' or item.product.type == 'UV DTF gang' or item.product.type == 'puff transfers' or item.product.tags contains 'supplies' or item.product.tags contains 'crafts'
+					assign isBySizeAvailable = true
+					assign bySizeTotal = bySizeTotal | plus: item.final_line_price
+				endif
+           
+				assign taglist = item.product.tags | join : " " | downcase
+                if taglist contains 'blank'
+					assign isBlankAvailable = true
+					assign blanksTotal = blanksTotal | plus: item.final_line_price
+				endif
+			endfor
+
+           if bySizeTotal < bysizediscount
+             assign bysizediscount = bySizeTotal
+           endif        
+            if bysizediscount > bySize_freeShipping_amount and bysizediscount > bySizeTotal
+              assign bysizediscount = bySize_freeShipping_amt
+            endif   
+            assign bySizeTotal = bySizeTotal | minus : bysizediscount
+			capture eligibilityBySize
+				assign a__ = bySize_freeShipping_amount | times: 100
+                 
+				if a__ > bySizeTotal
+                    assign awayFrom_bysize = a__ | minus: bySizeTotal
+					assign awayFrom_bysize = awayFrom_bysize | divided_by: 100.00 | round: 2
+                    assign awayFrom_bysize_0 = awayFrom_bysize | split: '.' | first
+					assign awayFrom_bysize_1 = awayFrom_bysize | split: '.' | last
+                    if awayFrom_bysize_1.size == 1
+						assign awayFrom_bysize_1 = awayFrom_bysize_1 | append: '0'
+					endif
+					assign awayFrom_bysize = awayFrom_bysize_0 | append: '.' | append: awayFrom_bysize_1 | prepend: '$'
+					echo settings.bySize_freeShipping_text | replace: '[AMOUNT]', awayFrom_bysize
+				else
+					echo "Congrats! <strong>Free Shipping</strong> Unlocked on <strong>Transfers & Supplies</strong>"
+				endif
+			endcapture
+
+           case localzone
+            when "CA"
+              assign b___ship = settings.blanks_freeShipping_amount_CA
+              assign b___nwprice = b___ship | prepend : "$"
+              assign b___nwprice = b___nwprice | append : " CAD"
+              assign blanks_freeShipping_tooltipContent = settings.blanks_freeShipping_tooltipContent_ca
+            else
+             assign b___ship = settings.blanks_freeShipping_amount
+             assign b___nwprice = b___ship | prepend : "$"
+             assign blanks_freeShipping_tooltipContent = settings.blanks_freeShipping_tooltipContent
+          endcase
+           
+              assign blankdiscount = disvalue
+              assign b___dis = b___ship | times : 100
+           
+              if blankdiscount > blanksTotal
+                assign blankdiscount = blanksTotal
+              endif
+             assign blanksTotal = blanksTotal | minus : blankdiscount
+            if blankdiscount > b___dis and blankdiscount > blanksTotal
+              assign bysizediscount = bySize_freeShipping_amt
+            endif
+           
+			capture eligibilityBlanks
+				assign b___ = b___ship | times: 100
+				if b___ > blanksTotal
+					assign awayFrom_blanks = b___ | minus: blanksTotal
+					assign awayFrom_blanks = awayFrom_blanks | divided_by: 100.00 | round: 2
+                    assign awayFrom_blanks_0 = awayFrom_blanks | split: '.' | first
+					assign awayFrom_blanks_1 = awayFrom_blanks | split: '.' | last
+					if awayFrom_blanks_1.size == 1
+						assign awayFrom_blanks_1 = awayFrom_blanks_1 | append: '0'
+					endif
+					assign awayFrom_blanks = awayFrom_blanks_0 | append: '.' | append: awayFrom_blanks_1 | prepend: '$'
+					echo settings.blanks_freeShipping_text | replace: '[AMOUNT]', awayFrom_blanks
+				else
+					echo "Congrats! <strong>Free Shipping</strong> Unlocked on <strong>Blanks</strong>"
+				endif
+			endcapture
+		-%}
+
+		{%- if settings.cartFreeShippingBySize or settings.cartFreeShippingBlanks -%}
+			{% if isBySizeAvailable or isBlankAvailable %}
+				<div class="sidebar-widget sidebar-widget--outline gutter-regular margin-bottom--regular">
+					<div class="sidebar-widget__content {% if type == 'page' %}fullpage-cart {% endif %}">
+						<div class="grt-cart-reposition">
+						{%- if settings.cartFreeShippingBySize and isBySizeAvailable -%}
+							<free-shipping-bysize class="sidebar-widget__contentItem  freeship_zone{{ localzone | downcase }}"
+								free-shipping-amount="{{ bySize_freeShipping_amount | times: 100 }}"
+								data-cart-total="{{ bySizeTotal }}"
+							>
+								{%- assign bySizeToolTip = '<picture class="tooltip"><img src="//ninja-transfers-cdn.imgix.net/info_da70c6e6-1e86-41d3-9035-2bf57d01d406_medium.svg?auto=format,compress&amp;v=1678797665" class="infoIcon infoModal grt-infoicon"><span class="tooltiptext">' | append: settings.bySize_freeShipping_tooltipContent | replace: '[AMOUNT]', nwprice | append: '</span></picture>' -%}
+								<div class="freeShipping__title">
+									<div class="shipping-grip">
+                                      <span class="freeShipping__content">{{ eligibilityBySize }}</span>
+                                      <span>{{ settings.bySize_freeShipping_title | replace: '[TOOLTIP]', bySizeToolTip }}</span>
+									</div>
+                                    <strong class="nowrap">{{ nwprice }}</strong>
+								</div>
+								<span class="cart-notice__slider">
+									<span class="cart-notice__slider-bar" style="background-color: #3eaeff; width: 0;"></span>
+								</span>
+							</free-shipping-bysize>
+						{%- endif -%}
+
+						{%- if settings.cartFreeShippingBlanks and isBlankAvailable -%}
+							<free-shipping-blanks class="sidebar-widget__contentItem freeshipzone{{ localzone | downcase }}"
+								free-shipping-amount="{{ b___ship | times: 100 }}"
+								data-cart-total="{{ blanksTotal }}"
+							>
+								{%- assign blanksToolTip = '<picture class="tooltip"><img src="//ninja-transfers-cdn.imgix.net/info_da70c6e6-1e86-41d3-9035-2bf57d01d406_medium.svg?auto=format,compress&amp;v=1678797665" class="infoIcon infoModal grt-infoicon"><span class="tooltiptext">' | append: blanks_freeShipping_tooltipContent | append: '</span></picture>' -%}
+								<div class="freeShipping__title">
+                                  <div class="shipping-grip">
+                                    <span class="freeShipping__content">{{ eligibilityBlanks }}</span>
+                                    <span>{{ settings.blanks_freeShipping_title | replace: '[TOOLTIP]', blanksToolTip }}</span>
+                                  </div>
+                                  <strong class="nowrap">{{ b___ship | prepend : "$" }}</strong>
+                                </div>
+								<span class="cart-notice__slider">
+									<span class="cart-notice__slider-bar" style="background-color: #fba500; width: 0;"></span>
+								</span>
+							</free-shipping-blanks>
+						{%- endif -%}
+					</div>
+					</div>
+				</div>
+			{% endif %}
+		{%- endif -%}
+
+		{%- liquid
+			unless settings.cart_upsell_product == blank
+				render 'product-cross-sell', heading: settings.cart_upsell_heading, product: settings.cart_upsell_product, id: 'cart-individual-product-cross-sell', widget_style: 'outline', heading_position: 'widget', class: 'cart-individual-product-recommendation hide-if-empty-cart margin-bottom--regular' 
+			endunless
+		-%}
+
+	{%- endif -%}
+
+<div class="sidebar-widget sidebar-widget--outline gutter-regular {% if type == 'page' %} cart-page-card {% else %} margin-bottom--regular {% endif %} cart-gift-widget">
+  <div class="sidebar-widget__content">
+    {%- render 'cart-gift-wrapping', class: 'cart-wrapping--page', hideQuickBuy: true -%}
+  </div>
+</div>
+  
+	<div class="cart__details 
+		{% if type == 'page' %} cart__subtotal-widget element--has-border--body element--border-radius {% endif %}
+		{% if cart.item_count == 0 %} cart--empty {% endif %}
+	">
+        <!--<div class="mws__fee">
+    <div class="mws__content">
+    </div>
+  </div>-->
+			    
+		{%- if cart.cart_level_discount_applications != blank -%} 
+			<div class="cart__subtotal cart__details--row">
+				<span>{{ 'cart.subtotal' | t }}</span>
+				<strong>{{ cart.items_subtotal_price | money }}</strong>
+			</div>
+			<div class="cart__discounts cart__details--row">
+				<span>{{ 'cart.discounts' | t }}</span>
+				{%- for discount_application in cart.cart_level_discount_applications -%}
+					<strong>{{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})</strong>
+				{%- endfor -%}
+			</div>
+		{%- endif -%}
+
+		<div class="cart__details--row cart-saving-row {% if customer.tags contains "Elite-Monthly" or customer.tags contains "Elite-Annually" %}lnkcolor{% endif %}">
+			<strong class="small">
+              {% if customer %}
+                {% if customer.tags contains "Elite-Monthly" or customer.tags contains "Elite-Annually" %}
+                  {{ 'cart.elite_saving' | t }}
+                  {% else %}
+                  {{ 'cart.total_saving' | t }}
+                {% endif %}
+              {% else %}
+                {{ 'cart.total_saving' | t }}
+              {% endif %}
+            </strong> 
+			<strong id="_total_saving"></strong>
+		</div>
+		<div class="cart__total cart__details--row saving">
+			<strong>{{ 'cart.total' | t }}</strong> 
+			<strong>{{ cart.total_price | money }}</strong>
+		</div>
+
+
+		{%- if settings.cart_notes_enable and type == 'page' -%}
+			<div class="cart__instructions">
+				<div class="form-field">
+					<label for="cartSpecialInstructions">{{ 'cart.note' | t }}</label>
+					<textarea name="note" id="cartSpecialInstructions" form="cart">{{ cart.note }}</textarea>
+				</div>
+			</div>
+		{%- endif -%}
+
+        
+		<div {% unless template contains 'cart' %} class="flex-buttons" {% endunless %}>
+			{%- unless type == 'page' -%}
+				<a id="ViewCart" href="{{ routes.cart_url }}" class="button button--regular button--outline button--move">
+					<span class="button__text">{{ 'cart.view_cart' | t }}</span>
+				</a>
+			{%- endunless -%}
+			<a id="CheckOut" href="/checkout" class="button button--regular button--solid button--move {% if type == 'page' %} btn-new-style {% endif %}">
+				<span class="button__text">{{ 'cart.checkout' | t }}</span>
+			</a>
+			{%- comment -%}
+			<button id="CheckOut" class="button button--regular button--solid button--move" type="submit" name="checkout" form="cart">
+				<span class="button__text">{{ 'cart.checkout' | t }}</span>
+			</button>
+			{%- endcomment -%}
+		</div>
+
+		{%- unless template contains 'order' -%}
+			{%- if additional_checkout_buttons and settings.cart_additional_buttons -%}
+				<div class="additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>
+			{%- endif -%}
+		{%- endunless -%}
+      	{% render 'reward-point-info' , classneed : "__cart-page", type:'cart', price : cart.total_price %}
+		<div class="cart__shipping text-color--opacity text-size--small text-center">
+			{%- liquid
+				if cart.taxes_included and shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url
+				elsif cart.taxes_included
+					echo 'cart.policies.taxes_included_but_shipping_at_checkout' | t
+				elsif shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url
+				else
+					echo 'cart.policies.taxes_and_shipping_at_checkout' | t
+				endif
+			-%}
+		</div>
+	</div>
+
+</div>
+
+<style>
+  @media (max-width: 767px) {
+    cart-form#AjaxCartForm{display: flex; flex-flow: column wrap;}
+    cart-form#AjaxCartForm > div:first-child {order: -1;}
+	cart-form div .share_cart_wrap{margin-top: 0;}
+	cart-form free-shipping-bysize,cart-form free-shipping-blanks,.cart-section{padding-top:0px;}
+  }
+</style>

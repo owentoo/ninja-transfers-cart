@@ -1,0 +1,641 @@
+{{ 'component-cart.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-cart.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cart-edit-size.js' | asset_url }}" defer></script>
+
+<!-- Delete All Sizes Confirmation Modal -->
+<div id="nt-delete-all-modal" role="dialog" aria-modal="true"
+  style="display:none; position:fixed; inset:0; z-index:10000; align-items:center; justify-content:center; background:rgba(0,0,0,0.5); padding:16px;">
+  <div style="background:#fff; border-radius:12px; padding:24px 20px 20px; max-width:320px; width:100%; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+    <p style="font-size:15px; font-weight:600; color:#111; margin:0 0 8px;">Delete all sizes?</p>
+    <p style="font-size:13px; color:#666; margin:0 0 20px; line-height:1.5;">All size variants for this design will be removed from your cart.</p>
+    <div style="display:flex; gap:10px;">
+      <button id="nt-delete-all-cancel" type="button" style="flex:1; padding:11px; border:1.5px solid #ddd; border-radius:8px; background:#fff; font-size:14px; font-weight:500; cursor:pointer; color:#333;">Cancel</button>
+      <button id="nt-delete-all-confirm" type="button" style="flex:1; padding:11px; border:none; border-radius:8px; background:#e53935; color:#fff; font-size:14px; font-weight:600; cursor:pointer;">Delete All</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Size Modal -->
+<div id="nt-edit-modal" role="dialog" aria-modal="true" aria-label="Edit Size"
+  style="display:none; position:fixed; inset:0; z-index:9999; align-items:flex-start; justify-content:center; overflow-y:auto; -webkit-overflow-scrolling:touch; background:rgba(0,0,0,0.45); padding:16px;">
+  <div id="nt-modal-box" style="background:#fff; border-radius:12px; width:100%; max-width:380px; box-shadow:0 8px 40px rgba(0,0,0,0.18); overflow-y:auto; max-height:calc(100dvh - 32px); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+
+    <!-- Header -->
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px 14px; border-bottom:1px solid #eee;">
+      <span id="nt-modal-title" style="font-size:15px; font-weight:600; color:#111;">Edit Size</span>
+      <button id="nt-edit-close" aria-label="Close"
+        style="background:none; border:none; cursor:pointer; font-size:22px; color:#888; line-height:1; padding:0 2px;">&times;</button>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:20px 20px 16px;">
+
+      <!-- Tabs -->
+      <div style="display:flex; border-bottom:1px solid #eee; margin-bottom:16px;">
+        <button id="nt-tab-custom" type="button"
+          style="flex:1; background:none; border:none; border-bottom:2px solid #019AFF; margin-bottom:-1px; padding:6px 0 10px; font-size:13px; font-weight:600; color:#111; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Custom Size
+        </button>
+        <button id="nt-tab-popular" type="button"
+          style="flex:1; background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; padding:6px 0 10px; font-size:13px; font-weight:500; color:#888; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Popular Size
+        </button>
+      </div>
+
+      <!-- Tab content — min-height locks modal so tabs don't shift it -->
+      <div style="min-height:72px;">
+
+        <!-- Custom Size tab -->
+        <div id="nt-view-custom">
+          <div style="display:flex; align-items:flex-end; gap:8px;">
+            <div style="flex:1; min-width:0;">
+              <label for="nt-edit-w" style="display:block; font-size:12px; color:#666; margin-bottom:5px;">Width (in)</label>
+              <div style="display:flex; align-items:center; border:1.5px solid #ddd; border-radius:8px; overflow:hidden;">
+                <button id="nt-w-minus" type="button" style="background:none; border:none; padding:9px 8px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">−</button>
+                <input id="nt-edit-w" type="text" inputmode="decimal" step="0.25" min="0.25" placeholder="0.00"
+                  style="flex:1; min-width:0; border:none; padding:9px 0; font-size:16px; color:#111; text-align:center; outline:none; background:transparent; width:0;">
+                <button id="nt-w-plus" type="button" style="background:none; border:none; padding:9px 8px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">+</button>
+              </div>
+            </div>
+            <div style="font-size:16px; color:#aaa; padding-bottom:11px; flex-shrink:0;">×</div>
+            <div style="flex:1; min-width:0;">
+              <label for="nt-edit-h" style="display:block; font-size:12px; color:#666; margin-bottom:5px;">Height (in)</label>
+              <div style="display:flex; align-items:center; border:1.5px solid #ddd; border-radius:8px; overflow:hidden;">
+                <button id="nt-h-minus" type="button" style="background:none; border:none; padding:9px 8px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">−</button>
+                <input id="nt-edit-h" type="text" inputmode="decimal" step="0.25" min="0.25" placeholder="0.00"
+                  style="flex:1; min-width:0; border:none; padding:9px 0; font-size:16px; color:#111; text-align:center; outline:none; background:transparent; width:0;">
+                <button id="nt-h-plus" type="button" style="background:none; border:none; padding:9px 8px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">+</button>
+              </div>
+            </div>
+          </div>
+          <div id="nt-edit-sqin" style="display:none;"></div>
+        </div>
+
+        <!-- Popular Size tab -->
+        <div id="nt-view-popular" style="display:none;">
+          <label style="display:block; font-size:12px; color:#666; margin-bottom:5px;">Size</label>
+          <div style="position:relative;">
+            <select id="nt-popular-select"
+              style="width:100%; box-sizing:border-box; border:1.5px solid #ddd; border-radius:8px; padding:10px 36px 10px 12px; font-size:14px; color:#111; outline:none; background:#fff; -webkit-appearance:none; -moz-appearance:none; appearance:none; cursor:pointer;">
+              <option value="">Select a popular size</option>
+            </select>
+            <div style="position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; line-height:0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div id="nt-smart-label" style="display:none; margin-top:10px; align-items:center; gap:5px;">
+            <span style="color:#27af1a; font-weight:700; font-size:12px;">Smart Sizing Applied</span>
+            <span class="nt-info-icon" tabindex="0">i</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dimension Limit Error -->
+      <div id="nt-dim-error" style="display:none; color:#e53935; font-size:12px; font-weight:500; line-height:1.4; margin-top:5px;"></div>
+
+      <!-- DPI / Clarity Warning -->
+      <div id="nt-dpi-warning" style="display:none; color:#fea333; font-size:12px; font-weight:500; line-height:1.4; margin-top:4px;">
+        At this size, artwork clarity may be compromised. Opt for a smaller size.
+      </div>
+
+      <!-- Headers + data in one grid so columns align perfectly -->
+      <div style="display:grid; grid-template-columns:auto auto auto minmax(74px,auto); justify-content:space-between; align-items:center; column-gap:12px; row-gap:8px; margin-top:14px;">
+        <!-- Header row -->
+        <div style="font-size:12px; color:#888; font-weight:500;">Qty</div>
+        <div style="font-size:12px; color:#888; font-weight:500; text-align:right;">Price</div>
+        <div style="font-size:12px; color:#888; font-weight:500; text-align:right;">Total</div>
+        <div></div>
+        <!-- Data row — Qty stepper -->
+        <div style="display:flex; align-items:center; justify-content:space-between; border:1.5px solid #ddd; border-radius:8px; min-width:96px;">
+          <button id="nt-qty-minus" type="button" style="background:none; border:none; outline:none; padding:9px 10px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">−</button>
+          <input id="nt-qty-val" type="text" inputmode="numeric" min="1" value="1" style="flex:1; text-align:center; font-size:16px; color:#111; padding:9px 0; border:none; outline:none; background:none; width:0; -moz-appearance:textfield;">
+          <button id="nt-qty-plus" type="button" style="background:none; border:none; outline:none; padding:9px 10px; font-size:18px; color:#555; cursor:pointer; line-height:1; flex-shrink:0;">+</button>
+        </div>
+        <!-- Price ea -->
+        <div style="text-align:right; min-width:62px;">
+          <div id="nt-price-ea-orig" style="display:none; font-size:11px; line-height:1.3; color:#bbb; text-decoration:line-through; white-space:nowrap;"></div>
+          <div id="nt-price-ea" style="font-size:13px; color:#555; font-weight:500; white-space:nowrap;"></div>
+        </div>
+        <!-- Total -->
+        <div style="text-align:right; min-width:62px;">
+          <div id="nt-total-orig" style="display:none; font-size:11px; line-height:1.3; color:#bbb; text-decoration:line-through; white-space:nowrap;"></div>
+          <div id="nt-total" style="font-size:15px; font-weight:700; color:#111; white-space:nowrap;"></div>
+        </div>
+        <!-- Badge -->
+        <div id="nt-disc-badge" style="visibility:hidden; color:#27af1a; font-size:12px; font-weight:700; white-space:nowrap; text-align:right;"></div>
+      </div>
+
+      <!-- Error -->
+      <div id="nt-edit-error"
+        style="display:none; margin-top:10px; font-size:13px; color:#dc2626; background:#fef2f2; border-radius:6px; padding:8px 10px;"></div>
+    </div>
+
+    <!-- Footer -->
+    <div style="display:flex; gap:10px; padding:16px 20px 20px; border-top:1px solid #eee;">
+      <button id="nt-edit-cancel"
+        style="flex:1; padding:11px; border:1.5px solid #ddd; border-radius:8px; background:#fff; color:#333; font-size:14px; font-weight:500; cursor:pointer;">
+        Cancel
+      </button>
+      <button id="nt-edit-confirm"
+        style="flex:2; padding:11px; border:none; border-radius:8px; background:#019AFF; color:#fff; font-size:14px; font-weight:600; cursor:pointer;">
+        Update
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Edit Size button + block styles -->
+<style>
+  /* Green upsell banner padding */
+  .cart-upsell-dtf-uv-block.upsell-cartinfo-cartpage { padding:18px; }
+  /* Hide qty stepper for Jump the Line & Pre-cut Option (keep trash) */
+  [data-product-id="6947128901715"] product-quantity,
+  [data-product-id="7578022281299"] product-quantity { display:none !important; }
+  /* Flat (non-grouped) cart items */
+  .cart-form__items > .cart-form-item { margin-bottom:12px; border:1.5px solid #e8e8e8; border-radius:10px; overflow:hidden; }
+  /* Match flat card padding to parent header — desktop: gutter-regular, ≤1100px: gutter-small, mobile: 16px */
+  .cart-form__items > .cart-form-item .cart-form-item--layout { padding:var(--gutter-regular) !important; }
+  .cart-form__items > .cart-form-item .cart-item__actions { margin-top: 0 !important; }
+  @media screen and (max-width:1100px) {
+    .cart-form__items > .cart-form-item .cart-form-item--layout { padding:var(--gutter-small) !important; }
+  }
+  @media (max-width:767px) {
+    .cart-form__items > .cart-form-item .cart-form-item--layout {
+      padding: 16px !important;
+      row-gap: 12px !important;
+      grid-template-columns: 6.25rem 1fr !important;
+      grid-template-areas:
+        "thumbnail price-title-variants"
+        "quantity quantity" !important;
+    }
+    .cart-form__items > .cart-form-item .cart-item__actions { grid-area: quantity; }
+    .cart-form__items > .cart-form-item .cart-item__thumbnail { align-self: start !important; }
+    .cart-form__items > .cart-form-item .cart-form-item__price-title-variants { align-self: start !important; }
+  }
+  /* JTL & Pre-cut card padding override (must come after flat card rules) */
+  .cart-form__items > [data-product-id="6947128901715"] .cart-form-item--layout,
+  .cart-form__items > [data-product-id="7578022281299"] .cart-form-item--layout { padding:16px !important; }
+  /* Design group parent/child */
+  .nt-design-group { margin-bottom:12px; border:1.5px solid #e8e8e8; border-radius:10px; overflow:hidden; }
+  /* Parent header — same grid as flat cards */
+  .nt-dg-header { display:grid; align-items:center; gap:var(--gutter-regular); padding:var(--gutter-regular); background:#fff; border-bottom:1px solid #e8e8e8;
+    grid-template-columns: 6.25rem 18.75rem 1fr 10rem;
+    grid-template-areas: "thumbnail info actions total";
+  }
+  @media screen and (max-width:1100px) {
+    .nt-dg-header { padding:var(--gutter-small); gap:var(--gutter-small);
+      grid-template-columns: 6.25rem 12.5rem 1fr 6.25rem;
+    }
+  }
+  @media (max-width:767px) {
+    .nt-dg-header { padding:16px;
+      grid-template-columns: 6.25rem 1fr;
+      grid-template-areas: "thumbnail info" "thumbnail total";
+    }
+    .nt-dg-header.nt-dg-single {
+      grid-template-areas:
+        "thumbnail info"
+        "actions   price";
+      row-gap: 8px;
+    }
+    .nt-dg-header.nt-dg-single .nt-dg-solo-controls { grid-area: actions; align-self: center; }
+    .nt-dg-header.nt-dg-single .nt-dg-solo-price { grid-area: price; align-self: center; }
+    .nt-dg-solo-price > .cart-item__price {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .nt-dg-solo-price > .cart-item__price > .discounted-line-item-price {
+      margin-bottom: 0 !important;
+    }
+    .nt-dg-solo-price > .cart-item__price > strong {
+      min-width: 5rem; text-align: right;
+    }
+    .nt-dg-info { align-self: start !important; }
+  }
+  /* Thumbnail — same dimensions + rules as .cart-item__thumbnail */
+  .nt-dg-thumb { grid-area:thumbnail; width:6.25rem; height:6.25rem; overflow:hidden; align-self:start; }
+  .nt-dg-thumb { background-image:linear-gradient(45deg,#e8e8e8 25%,transparent 25%),linear-gradient(-45deg,#e8e8e8 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e8e8e8 75%),linear-gradient(-45deg,transparent 75%,#e8e8e8 75%); background-size:8px 8px; background-position:0 0,0 4px,4px -4px,-4px 0; background-color:#fff; }
+  .nt-dg-thumb img { width:calc(100% - 16px); height:calc(100% - 16px); margin:8px; object-fit:contain; object-position:50% 50%; display:block; vertical-align:middle; opacity:1; }
+  .nt-dg-info { grid-area:info; min-width:0; }
+  .nt-dg-sizes-count { font-size: calc(13px / 16 * var(--base-body-primary-size) + 0px); margin-top:2px; display:block; }
+  .nt-dg-sizes-count strong { font-size:15px; font-weight:600; }
+  @media screen and (max-width:474px){ .nt-dg-sizes-count { font-size: calc(11px / 16 * var(--base-body-primary-size) + 0px); } }
+  @media screen and (min-width:475px) and (max-width:1023px){ .nt-dg-sizes-count { font-size: calc(12px / 16 * var(--base-body-primary-size) + 0px); } }
+  .nt-dg-actions { grid-area:actions; }
+  .nt-dg-total { grid-area:total; }
+  /* Single-size card: slot into header grid */
+  .nt-dg-solo-controls { grid-area:actions; margin-top:0; }
+  .nt-dg-solo-controls.cart-item__actions .qty-button { height:1.875rem; }
+  .nt-dg-solo-controls.cart-item__actions .qty-selector { height:1.875rem; }
+  .nt-dg-solo-price { grid-area:total; }
+  /* Match child-row property font size on single-size card */
+  .nt-dg-single .nt-size-block { font-size: calc(13px / 16 * var(--base-body-primary-size) + 0px); margin-top:2px; }
+  @media screen and (max-width:474px){ .nt-dg-single .nt-size-block { font-size: calc(11px / 16 * var(--base-body-primary-size) + 0px); } }
+  @media screen and (min-width:475px) and (max-width:1023px){ .nt-dg-single .nt-size-block { font-size: calc(12px / 16 * var(--base-body-primary-size) + 0px); } }
+  .nt-dg-name { display:block; font-weight:600; font-size:15px; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .nt-dg-qty { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-add-size-btn { background:none; border:none; color:#019AFF; padding:0; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; flex-shrink:0; touch-action:manipulation; text-decoration:none; }
+  .nt-add-size-btn:hover { color:#0077cc; }
+  .nt-add-size-footer { padding:12px var(--gutter-regular); border-top:1px solid #f0f0f0; background:#fafafa; text-align:left; }
+  @media screen and (max-width:1100px) { .nt-add-size-footer { padding:12px var(--gutter-small); } }
+  @media (max-width:767px) { .nt-add-size-footer { padding:12px 16px; } }
+  /* Divider between child rows (correct selector: .cart-form-item is the direct child) */
+  .nt-design-group > .cart-form-item + .cart-form-item { border-top:1px solid #f0f0f0; }
+  /* At mobile the theme zeroes all .cart-form-item borders — restore for child rows */
+  @media (max-width:767px) {
+    .nt-design-group > .cart-form-item + .cart-form-item { border-top:1px solid #f0f0f0 !important; }
+  }
+  /* Remove top/bottom padding on child rows — tighten the group list.
+     Explicit right padding at every breakpoint matches flat cards + parent header. */
+  /* Child rows: collapse thumbnail column, override grid at every breakpoint */
+  .nt-design-group .cart-form-item--layout {
+    padding-top:    12px !important;
+    padding-bottom: 12px !important;
+    padding-right:  var(--gutter-regular) !important;
+    grid-template-columns: calc(25rem + var(--gutter-regular)) 1fr 10rem !important;
+    grid-template-areas: "price-title-variants quantity total" !important;
+  }
+  @media screen and (max-width:1100px) {
+    .nt-design-group .cart-form-item--layout {
+      padding-right: var(--gutter-small) !important;
+      grid-template-columns: calc(18.75rem + var(--gutter-small)) 1fr 6.25rem !important;
+    }
+  }
+  @media (max-width:767px) {
+    .nt-design-group .cart-form-item--layout {
+      padding: 16px !important;
+      row-gap: 12px !important;
+      grid-template-columns: 1fr !important;
+      grid-template-areas: "price-title-variants" "quantity" !important;
+    }
+    .nt-design-group .cart-form-item .cart-item__actions { padding-top: 0 !important; }
+  }
+  /* Child rows get the gray background */
+  .nt-design-group .cart-form-item { background:#fafafa; }
+  /* Remove default margin-top on actions so content is evenly centered in the row */
+  .nt-design-group .cart-form-item .cart-item__actions { margin-top: 0 !important; }
+  /* Hide thumbnail, product title, upload preview on child rows — parent header shows them */
+  .nt-design-group .cart-form-item .cart-item__thumbnail { display:none; }
+  .nt-design-group .cart-form-item .cart-item__title { display:none; }
+  .nt-design-group .cart-form-item .nt-upload-preview-row { display:none; }
+  .nt-dg-upload { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-dg-price-orig { font-size:12px; margin-bottom:2px; }
+  .nt-dg-price-orig del { color:#888; }
+  .nt-dg-discount { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-dg-precut { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  /* Hide per-child discount labels — discount is shown once on the parent header */
+  .nt-design-group .cart-form-item .promoCoupen,
+  .nt-design-group .cart-form-item .nonePromoCoupen { display:none !important; }
+  .nt-size-block { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .nt-size-block > span > strong { font-size:15px; font-weight:600; }
+  .nt-edit-size-btn {
+    background: none; border: none; padding: 0;
+    font-size: inherit; font-weight: bold; cursor: pointer;
+    text-decoration: none; font-family: inherit;
+    line-height: 1;
+  }
+  #nt-qty-val::-webkit-inner-spin-button,
+  #nt-qty-val::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  #nt-edit-modal button { touch-action: manipulation; }
+  .nt-info-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #111; color: #fff; font-size: 9px; font-weight: 700;
+    font-style: normal; cursor: default; flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .nt-delete-all-btn { background:none; border:none; padding:0; cursor:pointer; font-size:12px; color:#888; font-weight:600; font-family:inherit; margin-top:0; margin-left:6px; text-decoration:none; }
+  .nt-delete-all-btn:hover { color:#e53935; }
+  /* cart-form is display:flex — the inner <form> has min-width:auto which
+     prevents it from shrinking to fit on mobile, causing ~22px right overflow.
+     min-width:0 + width:100% fixes that; overflow-x:hidden clips any residual. */
+  cart-form#AjaxCartForm { overflow-x: hidden; }
+  form.cart__form { min-width: 0; width: 100%; }
+
+  /* ── Side-by-side pricing: ea price + total on one line ── */
+  /* Desktop only (>1100px) — tablet stays stacked due to tight space */
+  @media screen and (min-width:1101px) {
+    /* Widen total column on flat cards to fit both prices */
+    .cart-form__items > .cart-form-item .cart-form-item--layout {
+      grid-template-columns: 6.25rem 18.75rem 1fr 10rem !important;
+    }
+    /* Desktop price wrapper (outer .cart-item__price): flex row */
+    .cart-form-item .text-right > .cart-item__price {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    /* Remove stacked margin on ea-price div when side-by-side */
+    .cart-form-item .text-right > .cart-item__price > .discounted-line-item-price {
+      margin-bottom: 0 !important;
+    }
+    /* Parent header total: stacked (strikethrough original above, final below) */
+    .nt-dg-total {
+      display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+    }
+    .nt-dg-total .nt-dg-price-orig { margin-bottom: 2px; }
+    /* Fixed min-width on total so ea prices always align at the same position */
+    .cart-form-item .text-right > .cart-item__price > strong {
+      min-width: 5rem; text-align: right;
+    }
+    .nt-dg-total .nt-dg-price-final {
+      min-width: 5rem; text-align: right;
+    }
+    /* Single-size card: side-by-side ea price + total (same as child rows) */
+    .nt-dg-solo-price > .cart-item__price {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .nt-dg-solo-price > .cart-item__price > .discounted-line-item-price {
+      margin-bottom: 0 !important;
+    }
+    .nt-dg-solo-price > .cart-item__price > strong {
+      min-width: 5rem; text-align: right;
+    }
+  }
+  /* Mobile (≤767px) — different DOM: ea + total are siblings inside .text-right */
+  @media (max-width:767px) {
+    .cart-item__actions > .text-right.d-block {
+      display: flex !important; align-items: center; justify-content: flex-end; gap: 8px;
+    }
+    .cart-item__actions > .text-right.d-block > .discounted-line-item-price {
+      margin-bottom: 0 !important;
+    }
+    /* Fixed min-width on total so ea prices always align at the same position */
+    .cart-item__actions > .text-right > .cart-item__price:not(.discounted-line-item-price) {
+      min-width: 5rem; text-align: right;
+    }
+    /* Parent header total on mobile: stacked */
+    .nt-dg-total {
+      display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+    }
+    .nt-dg-total .nt-dg-price-orig { margin-bottom: 2px; }
+    .nt-dg-total .nt-dg-price-final {
+      min-width: 5rem; text-align: right;
+    }
+  }
+</style>
+
+{%- render 'breadcrumb',
+  container: 'large',
+  vertical_space: 'vertical-space-xsmall',
+  style: 'breadcrumb-main--margin'
+-%}
+
+<div class="container container--large container--vertical-space-small">
+  <h1 style="font-size: 34px;" class="title heading-size--page-title">{{ 'cart.title' | t }}</h1>
+
+  <div class="cart-section {% if cart.items.size == 0 %} cart-section--empty {% endif %}">
+    <div>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            <div class="margin-bottom--regular" {{ block.shopify_attributes }}>
+              {%- render block -%}
+            </div>
+
+          {%- when 'cart-items' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- render 'cart-form-page' -%}
+            </div>
+
+          {%- when 'grt_upsell_block' -%}
+            <div class="cart-section__full-width" {{ block.shopify_attributes }}>
+              {%- render 'grt-upsell-block', block: block -%}
+            </div>
+            
+          {%- when 'shipping-calculator' -%}
+            <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+            <script src="{{ 'component-shipping-calculator.js' | asset_url }}" defer></script>
+            {{ 'component-shipping-calculator.css' | asset_url | stylesheet_tag }}
+
+            <shipping-calculator {{ block.shopify_attributes }}>
+              <div class="shipping-calculator cart-block element--has-border--body margin-bottom--regular margin-top--regular">
+                <div class="cart-block__head">
+                  <span>{{ 'cart.shipping_calculator.title' | t }}</span>
+                </div>
+
+                <div class="shipping-calculator__content cart-block__content">
+                  <div class="shipping-calculator__cell">
+                    <label for="country">{{ 'customers.addresses_page.form.country_label' | t }}</label>
+                    <select
+                      name="country"
+                      id="shipping-estimator-country"
+                      data-default="{{ customer.default_address.country | default: section.settings.shipping_estimator_default_country }}"
+                      required
+                    >
+                      {{- country_option_tags -}}
+                    </select>
+                  </div>
+
+                  <div class="shipping-calculator__cell" id="address_province_container" style="display: none">
+                    <label for="province">{{ 'customers.addresses_page.form.province_label' | t }}</label>
+                    <select
+                      name="province"
+                      id="shipping-estimator-province"
+                      data-default="{{ customer.default_address.province }}"
+                    ></select>
+                  </div>
+
+                  <div class="shipping-calculator__cell">
+                    <label for="zip">{{ 'customers.addresses_page.form.zip_label' | t }}</label>
+                    <input
+                      type="text"
+                      name="zip"
+                      id="shipping-estimator-zip"
+                      class="form__field form__field--text"
+                      value="{{ customer.default.address.zip }}"
+                      required
+                    >
+                  </div>
+
+                  <div class="shipping-calculator__cell">
+                    {%- render 'button',
+                      style: 'outline js-estimate-shipping',
+                      label: 'cart.shipping_calculator.form_button_label',
+                      label_is_translation: true,
+                      is_submit: true,
+                      type: 'button',
+                      attribute: 'data-action="estimate-shipping"'
+                    -%}
+                  </div>
+                </div>
+
+                <div class="gutter--regular shipping-estimator__results" style="display: none;">
+                  <div class="alert alert--error"></div>
+
+                  <div class="shipping-estimator__results-content" style="display: none;">
+                    <span class="shipping-estimator__results-content-heading text-size--regular"></span>
+                    <ul class="shipping-estimator__results-content-list"></ul>
+                  </div>
+                </div>
+              </div>
+            </shipping-calculator>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div>
+      {%- render 'cart-subtotal', type: 'page' -%}
+      <div class="mobile-suggestion-list"></div>
+
+  {% if cart.items.size != 0 %} 
+    <style>
+      .additional-objects-box{padding:var(--gutter-regular)}
+      .pay-icon-sets{border-bottom: 1px solid #e5e5e5; padding-bottom: 19px; margin:0px 1px; margin-top: 16px;}
+      .pay-icon-sets span{display:block; margin: 0px auto;}
+      .pay-icon-sets img{max-width:100%;}
+      .cartsection-suggetionblock{display:none !important;}
+      .cart-faq_item .faq-item:not(:last-child){border-bottom: 1px solid #e5e5e5;}
+      .cart-faq_item .faq-icon-wrap{font-weight: bold; align-items: center; display:flex; font-size:calc(14px / 16 * var(--base-body-primary-size) + 0px);}
+      .cart-faq_item .faq-icon-image{display: flex; width: 24px; height: 24px; margin-right: 10px;}
+      .faq-section.cart-faq_item{margin:0 1px;}
+      .faq-question{padding:18px 0px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;}
+      .faq-icon-image img{max-width:100%;}
+      .faq-icon { font-size: 18px; transition: transform 0.3s; margin-left: 10px;}
+      .faq-answer:empty{display: none;}
+      .faq-answer{color:#828282}
+    </style>
+    <div class="additional-objects-box">
+      <div class="d-flex align-items-center btngroup8 pay-icon-sets">
+        <span>
+          <img src="https://cdn.shopify.com/s/files/1/0558/0265/8899/files/transfer-installments-121724.png?v=1734458882" loading="lazy" alt="payment terms" />
+        </span>
+      </div>
+      <!-- FAQ Section Starts Here -->
+      <div class="faq-section cart-faq_item">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq_item' %}
+            <div class=" faq-item">
+              <div class="faq-question">
+
+                <div class="faq-icon-wrap">
+                  {% if block.settings.icon__image %}
+                    <span class="faq-icon-image">
+                      {% if block.settings.icon__image == 'guarantee' %}
+                        {% render 'gurantee' %}
+                      {% elsif block.settings.icon__image == 'support' %}
+                        {% render 'timer-icon' %}
+                      {% endif %}
+                    </span>
+                  {% endif %}
+
+                {{ block.settings.question }}
+                </div>
+                <div >
+
+                </div>
+              </div>
+              <div class="faq-answer">{{- block.settings.answer -}}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- FAQ Section Ends Here -->
+    </div>
+      {% endif %}
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateCartItemCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        const titleElement = document.querySelector('.title.heading-size--page-title');
+        titleElement.textContent = `{{ 'cart.title' | t }} (${cart.item_count})`;
+      })
+      .catch(error => console.error('Error fetching cart:', error));
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+
+    updateCartItemCount();
+    document.addEventListener('cart:updated', function() {
+      updateCartItemCount();
+    });
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:settings_schema.cart-page.name",
+  "blocks": [
+    {
+      "type": "cart-items",
+      "limit": 1,
+      "name": "t:sections.main-cart-items.name"
+    },
+    {
+      "type": "shipping-calculator",
+      "limit": 1,
+      "name": "t:sections.local-extra-words.sections.main-cart.blocks.shipping-calculator.name"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Question text"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Answer text goes here.</p>"
+        },
+        {
+          "type": "select",
+          "id": "icon__image",
+          "label": "Enable Icons",
+          "options": [
+            {
+              "label": "Guarantee",
+              "value": "guarantee"
+            },
+            {
+              "label": "Live support",
+              "value": "support"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grt_upsell_block",
+      "name": "Ninja Upsell Block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "You may also like" },
+        { "type": "text", "id": "subheading", "label": "Subheading", "default": "Add these popular items to your order" },
+        { "type": "image_picker", "id": "upsell_info_icon_1", "label": "Info icon 1" },
+        { "type": "text", "id": "upsell_info_text_1", "label": "Info text 1" },
+        { "type": "image_picker", "id": "upsell_info_icon_2", "label": "Info icon 2" },
+        { "type": "text", "id": "upsell_info_text_2", "label": "Info text 2" },
+        {"type":"checkbox","id":"upsell_pageload","label":"Active on page load","default":true},
+        { "type": "product_list", "id": "upsell_products", "label": "Upsell products" },
+        {
+          "type": "text",
+          "id": "swatch_option_name",
+          "label": "Swatch option name",
+          "default": "Color"
+        },
+        {
+          "type": "textarea",
+          "id": "swatch_map",
+          "label": "Swatch map (one per line: Name:#hex)",
+          "default": "KHAKI_NAVY:#B1A589",
+          "info": "Example: Navy:#0b1b3f (one per line)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,637 @@
+/* Cap sidebar at viewport width on small screens */
+@media screen and (max-width: 767px) {
+  #site-cart-sidebar {
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+  }
+  /* Prevent form from overflowing the padded content area */
+  #site-cart-sidebar .cart__form {
+    max-width: 100%;
+    min-width: 0;
+  }
+  /* Constrain upsell banner so text wraps instead of overflowing */
+  #site-cart-sidebar .cart-upsell-dtf-uv-block {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  /* Halve spacing between cards on mobile — sidebar */
+  .sidebar .cart-item:not(:first-child),
+  .sidebar .cart-item:not(.antigro-designer) + .cart-item.antigro-designer {
+    margin-top: calc(var(--sidebar-gutter) * 0.375);
+  }
+  /* Halve spacing between cards on mobile — cart page */
+  .cart-form-item--layout {
+    padding-top: calc(var(--gutter-small) / 2);
+    padding-bottom: calc(var(--gutter-small) / 2);
+  }
+}
+
+.cart-item {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+.sidebar .cart-item:not(:first-child) {
+  margin-top: calc(var(--sidebar-gutter) * 0.75);
+}
+#site-cart-sidebar .cart-item:not(:first-child) {
+  margin-top: 8px;
+}
+.cart-item__thumbnail {
+  display: block;
+  width: 6.25rem;
+  align-self: flex-start;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-color: var(--color-borders-main);
+}
+.cart-item__thumbnail img {
+  vertical-align: middle;
+  opacity: 1 !important;
+}
+.cart-item__content {
+  margin-inline-start: 1.25rem;
+  display: flex;
+  min-height: 100%;
+  align-items: flex-start;
+  word-break: break-word;
+}
+.search-item .cart-item__content {
+  align-items: center;
+}
+.cart-item__content > div > * {
+  display: block;
+}
+.cart-item__price {
+  margin-bottom: 0.125rem;
+}
+.cart-item__unit-price {
+  margin: -0.375rem 0 0.125rem;
+}
+.cart-item__variant {
+  margin-top: 0.25rem;
+}
+.cart-item__variant + .cart-item__variant {
+  margin-top: -0.25rem;
+}
+.cart-item__property {
+  margin-top: 0.25rem;
+}
+@media screen and (max-width: 474px) {
+  .cart-item__property {
+    font-size: calc(
+				11px / 16 * var(--base-body-primary-size) + 0px
+			);
+  }
+}
+@media screen and (min-width: 475px) and (max-width: 1023px) {
+  .cart-item__property {
+    font-size: calc(
+					12px / 16 * var(--base-body-primary-size) + 0px
+				);
+  }
+}
+@media screen and (min-width: 1024px) {
+  .cart-item__property {
+    font-size: calc(
+				13px / 16 * var(--base-body-primary-size) + 0px
+			);
+  }
+}
+.cart-item__title {
+  font-weight: var(--font-weight-body-primary-bold);
+  line-height: 1.25;
+}
+.cart-item__actions {
+  display: flex !important;
+  position: relative;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+.cart-item__actions .quantity-selector-holder {
+  justify-content: flex-start;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-bottom: 0;
+}
+.cart-item__actions cart-product-quantity {
+  display: flex;
+  border: 1px solid var(--color-borders-forms-primary);
+  border-radius: var(--border-radius-forms);
+}
+.cart-item__actions .qty-button {
+  line-height: 1;
+  width: 1.875rem;
+  height: 1.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 100ms linear;
+}
+.cart-item__actions .qty-button svg * {
+  fill: var(--color-text-main);
+  transition: all 100ms linear;
+}
+.cart-item__actions .qty-button.qty-minus svg {
+  transform: translateX(0.125rem);
+}
+.cart-item__actions .qty-button.qty-plus svg {
+  transform: translateX(-0.125rem);
+}
+.cart-item__actions .qty-selector {
+  height: 1.875rem;
+  width: 1.875rem;
+  border: 0;
+  padding: 0;
+  text-align: center;
+  line-height: 1;
+  font-size: calc(16px / 16 * var(--base-body-primary-size) + 0px);
+}
+.cart-item__actions .remove {
+  line-height: 1;
+}
+.cart-item__actions .remove:not(:first-child) {
+  margin-inline-start: 0.75rem;
+}
+.cart-item--gift-wrapping .remove, .cart-item--gift-wrapping .qty-button {
+  display: none;
+}
+.cart-item--gift-wrapping cart-product-quantity {
+  border: none;
+  pointer-events: none;
+}
+.sidebar .cart-item--gift-wrapping .quantity-selector-holder {
+  display: none;
+}
+
+.cart-notice {
+  padding-top: 2px !important;
+  padding-bottom: 12px !important;
+}
+.sidebar .cart-notice {
+  width: calc(100% + var(--sidebar-gutter) * 2);
+  margin-top: calc(var(--sidebar-gutter) * -1);
+  margin-inline-start: calc(var(--sidebar-gutter) * -1);
+  margin-bottom: 12px;
+  padding-left: var(--sidebar-gutter);
+  padding-right: var(--sidebar-gutter);
+  border-bottom: 1px solid var(--color-borders-main);
+}
+.cart-notice__slider {
+  display: block;
+  height: 0.3125rem;
+  width: 100%;
+  background: var(--color-secondary-background-main);
+  margin-top: 0.3125rem;
+  border-radius: 0.3125rem;
+  position: relative;
+}
+.cart-notice__slider-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 0.3125rem;
+  background: var(--color-text-main);
+}
+html[dir=rtl] .cart-notice__slider-bar {
+  right: 0;
+}
+html[dir=ltr] .cart-notice__slider-bar {
+  left: 0;
+}
+
+.cart__form.processing {
+  opacity: 0.36;
+  pointer-events: none;
+}
+.cart__details--row {display: flex; justify-content: space-between; padding: 0.75rem 0; align-items: flex-end; padding-bottom:0.5rem;}
+.cart__details--row > span{line-height:normal;}
+.cart__details--row:first-child {padding-top: 0;}
+.cart__details--row + .cart__details--row{padding-top:0;}
+.cart__details--row.saving{/*border-bottom: 1px solid var(--color-borders-main);*/}
+.cart__details--row:first-child {
+  padding-top: 0;
+}
+.cart__details--row strong {
+  text-align: right;
+}
+.cart__details{font-size:13px; padding-top:calc(var(--gutter-regular) * 0.5);}
+.cart__total strong {
+  /*font-size: calc(28px / 16 * var(--base-body-primary-size) + 0px);*/ line-height: normal;
+}
+.cart__total strong.label_text{font-weight:bold;}
+.cart__shipping {margin-top: 0.5375rem;;}
+.cart__shipping + .flex-buttons {
+  margin-top: 0.3125rem !important;
+}
+.flex-buttons.cart-section{margin-top:0 !important;}
+.cart__details--row.cart-saving-row{display:none;}
+#site-cart-sidebar .cart-continue {
+  margin-top: 1.5rem;
+}
+#site-cart-sidebar.cart-is-empty .hide-if-empty-cart {
+  display: none;
+}
+#site-cart-sidebar:not(.cart-is-empty) .cart-continue {
+  display: none;
+}
+#site-cart-sidebar .sidebar__footer {
+  padding: 0.5375rem var(--sidebar-gutter); padding-top: 0; border-top: none;
+}
+#site-cart-sidebar .sidebar__footer .sidebar-widget__content{border-radius:0; border:none; padding:12px var(--gutter-regular);}
+.cart-wrapping {
+  display: flex;
+  position: relative;
+}
+.cart-wrapping--sidebar {
+  border-top: 1px solid var(--color-borders-main);
+  padding: 0.5375rem var(--sidebar-gutter);
+}
+.cart-wrapping--sidebar label {
+  font-size: calc(13px / 16 * var(--base-body-primary-size) + 0px);
+}
+.cart-wrapping--page label {
+  font-size: calc(14px / 16 * var(--base-body-primary-size) + 0px);
+}
+.cart-wrapping input {
+  flex-shrink: 0;
+}
+.cart-wrapping label {
+  margin-left: 10px;
+}
+.cart-section--empty .cart-wrapping, .cart-is-empty .cart-wrapping {
+  display: none;
+}
+
+
+/* Antigro Designer */
+
+.cart-form-item.antigro-designer,
+.cart-item.antigro-designer
+{
+  border-left: 2px solid #42a9de;
+}
+
+.sidebar .cart-item:not(.antigro-designer) + .cart-item.antigro-designer {
+  margin-top: calc(var(--sidebar-gutter) * .75);
+}
+
+.sidebar .cart-item.antigro-designer {
+  margin-top: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.cart-form-item.antigro-designer .cart-item__thumbnail,
+.cart-item.antigro-designer .cart-item__thumbnail
+{
+  margin-left: 5px;
+}
+
+.antigro-designer__cart-controls {
+  align-items: center;
+  background-color: #e4f6ff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom: 2px solid #42a9de;
+  border-left: 2px solid #42a9de;
+  display: flex;
+  height: 100%;
+  padding: 10px;
+  width: 100%;
+}
+
+.antigro-designer__cart-remove {
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  width: 20px;
+  margin-left: 10px;
+}
+
+.antigro-designer__cart-remove:hover {
+  text-decoration: underline;
+}
+
+/* end Antigro Designer */
+
+/* ── Slide-out cart: side-by-side ea + total pricing ── */
+#site-cart-sidebar .cart-item__actions > .text-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+#site-cart-sidebar .cart-item__actions > .text-right > .discounted-line-item-price {
+  margin-bottom: 0 !important;
+  flex-shrink: 0;
+}
+#site-cart-sidebar .cart-item__actions > .text-right > .cart-item__price:not(.discounted-line-item-price) {
+  min-width: 5rem;
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Slide-out cart: design group parent/child layout ── */
+#site-cart-sidebar .nt-design-group {
+  margin-bottom: 0;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#site-cart-sidebar .nt-design-group + .nt-design-group,
+#site-cart-sidebar .nt-design-group + .cart-item,
+#site-cart-sidebar .cart-item + .nt-design-group {
+  margin-top: 8px;
+}
+
+/* Parent header */
+#site-cart-sidebar .nt-dg-header {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  grid-template-areas:
+    "thumbnail info"
+    "thumbnail total";
+  align-items: start;
+  gap: 10px;
+  padding: 12px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/* Thumbnail */
+#site-cart-sidebar .nt-dg-thumb {
+  grid-area: thumbnail;
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  align-self: start;
+  background-image:
+    linear-gradient(45deg, #e8e8e8 25%, transparent 25%),
+    linear-gradient(-45deg, #e8e8e8 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e8e8e8 75%),
+    linear-gradient(-45deg, transparent 75%, #e8e8e8 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  background-color: #fff;
+}
+#site-cart-sidebar .nt-dg-thumb img {
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  margin: 6px;
+  object-fit: contain;
+  object-position: 50% 50%;
+  display: block;
+  vertical-align: middle;
+  opacity: 1;
+}
+
+/* Info block */
+#site-cart-sidebar .nt-dg-info {
+  grid-area: info;
+  min-width: 0;
+  align-self: start;
+}
+#site-cart-sidebar .nt-dg-name {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#site-cart-sidebar .nt-dg-upload {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 2px;
+}
+#site-cart-sidebar .nt-dg-qty {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 2px;
+}
+#site-cart-sidebar .nt-dg-discount {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 2px;
+}
+
+/* Precut label */
+#site-cart-sidebar .nt-dg-precut {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 2px;
+}
+/* Sizes count */
+#site-cart-sidebar .nt-dg-sizes-count {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 2px;
+}
+/* Hide Delete All in slide-out cart */
+#site-cart-sidebar .nt-delete-all-btn {
+  display: none;
+}
+
+/* Actions column — hide on sidebar (no Edit / Add Size) */
+#site-cart-sidebar .nt-dg-actions {
+  display: none !important;
+}
+
+/* Total pricing block */
+#site-cart-sidebar .nt-dg-total {
+  grid-area: total;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+#site-cart-sidebar .nt-dg-price-orig {
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+#site-cart-sidebar .nt-dg-price-orig del {
+  color: #888;
+}
+#site-cart-sidebar .nt-dg-price-final strong {
+  font-size: 13px;
+}
+
+/* ── Child rows inside design group ── */
+#site-cart-sidebar .nt-design-group .nt-child-row {
+  background: #fafafa;
+  margin-top: 0 !important;
+}
+#site-cart-sidebar .nt-design-group .nt-child-row + .nt-child-row {
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Hide thumbnail on child rows */
+#site-cart-sidebar .nt-child-row .cart-item__thumbnail {
+  display: none;
+}
+
+/* Remove the left margin that was for the thumbnail gap */
+#site-cart-sidebar .nt-child-row .cart-item__content {
+  margin-inline-start: 0;
+  padding: 16px;
+}
+
+/* Hide product title — parent header shows it */
+#site-cart-sidebar .nt-child-row .cart-item__title {
+  display: none;
+}
+
+/* Hide upload preview row on child — parent header shows it */
+#site-cart-sidebar .nt-child-row .nt-upload-preview-row {
+  display: none;
+}
+
+/* Hide per-child discount labels — shown once on parent */
+#site-cart-sidebar .nt-child-row .promoCoupen,
+#site-cart-sidebar .nt-child-row .nonePromoCoupen {
+  display: none !important;
+}
+
+/* Actions row in child: side-by-side qty + price */
+#site-cart-sidebar .nt-child-row .cart-item__actions {
+  margin-top: 0 !important;
+  padding-top: 14px;
+}
+
+/* Hide Edit button on child rows — not available in sidebar */
+#site-cart-sidebar .nt-child-row .nt-edit-size-btn {
+  display: none;
+}
+
+/* ── Single-size design group — collapsed into one card ── */
+
+/* Generic styles (cart page + sidebar) */
+.nt-dg-solo-controls {
+  grid-area: actions;
+}
+.nt-dg-solo-price {
+  grid-area: total;
+}
+.nt-dg-single .nt-size-block .nt-edit-size-btn {
+  margin-left: 6px;
+}
+/* Hide arrange-properties extras already shown in header */
+.nt-dg-single .nt-upload-preview-row,
+.nt-dg-single .promoCoupen,
+.nt-dg-single .nonePromoCoupen,
+.nt-dg-single .nt-dg-info > div.prop:not(.nt-size-block) {
+  display: none !important;
+}
+
+/* Sidebar-specific overrides */
+#site-cart-sidebar .nt-dg-single {
+  grid-template-columns: 5rem 1fr auto;
+  grid-template-areas:
+    "thumbnail info   info"
+    "controls  controls price";
+}
+#site-cart-sidebar .nt-dg-solo-controls {
+  grid-area: controls;
+  padding-top: 8px;
+}
+#site-cart-sidebar .nt-dg-solo-controls .qty-button,
+#site-cart-sidebar .nt-dg-solo-controls .qty-selector {
+  height: 1.875rem;
+}
+#site-cart-sidebar .nt-dg-solo-price {
+  grid-area: price;
+  padding-top: 8px;
+}
+#site-cart-sidebar .nt-dg-solo-price > .cart-item__price {
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+}
+#site-cart-sidebar .nt-dg-solo-price > .cart-item__price > .discounted-line-item-price {
+  margin-bottom: 0 !important;
+}
+#site-cart-sidebar .nt-dg-solo-price > .cart-item__price > strong {
+  min-width: 5rem; text-align: right;
+}
+#site-cart-sidebar .nt-dg-single .nt-size-block {
+  font-size: 11px;
+  margin-top: 2px;
+}
+#site-cart-sidebar .nt-dg-single .nt-edit-size-btn {
+  display: none;
+}
+
+/* ── Flat item cards (non-upload items) ── */
+/* Uses cart-page-item.liquid (same as cart page) with sidebar grid overrides.
+   section-main-cart.css isn't loaded in the sidebar, so we provide the full
+   grid definition here instead of just overrides. */
+#site-cart-sidebar .nt-flat-card {
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0;
+}
+/* Full grid definition — mirrors cart page mobile layout */
+#site-cart-sidebar .nt-flat-card .cart-form-item--layout {
+  display: grid;
+  padding: 16px;
+  gap: 12px 15px;
+  grid-template-columns: 6.25rem 1fr;
+  grid-template-rows: max-content max-content;
+  grid-template-areas:
+    "thumbnail price-title-variants"
+    "actions actions";
+  align-items: center;
+}
+/* Grid area assignments (normally from section-main-cart.css) */
+#site-cart-sidebar .nt-flat-card .cart-item__thumbnail {
+  grid-area: thumbnail;
+  border-color: transparent;
+}
+#site-cart-sidebar .nt-flat-card .cart-form-item__price-title-variants {
+  grid-area: price-title-variants;
+}
+#site-cart-sidebar .nt-flat-card .cart-item__actions {
+  grid-area: actions;
+  margin-top: 0;
+}
+/* Show mobile prices (inside actions), hide desktop price column */
+#site-cart-sidebar .nt-flat-card .d-md-none {
+  display: flex !important;
+}
+#site-cart-sidebar .nt-flat-card .d-none.d-md-block {
+  display: none !important;
+}
+/* Pinned items (cart-item inside flat card) need padding to match design group header */
+#site-cart-sidebar .nt-flat-card > .cart-item {
+  padding: 12px;
+}
+/* Override PDP product-quantity styles in sidebar — cart uses cart-product-quantity border instead */
+#site-cart-sidebar product-quantity {
+  border: none !important;
+}
+/* Pinned items (antigro read-only qty): remove PDP min-width so text doesn't expand */
+#site-cart-sidebar .nt-flat-card > .cart-item .product-quantity {
+  min-width: 0 !important;
+}
+/* Spacing between flat cards */
+#site-cart-sidebar .nt-flat-card + .nt-flat-card,
+#site-cart-sidebar .nt-design-group + .nt-flat-card,
+#site-cart-sidebar .nt-flat-card + .nt-design-group {
+  margin-top: 8px;
+}

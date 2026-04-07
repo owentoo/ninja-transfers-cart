@@ -1,0 +1,333 @@
+{% assign reward_msg = reward_msg | default : false %}
+{% assign reward_cta = "" %}
+{% assign reward_popuptitle = reward_title | default : "" %}
+{% assign reward_popupmsg = reward_text | default : "" %}
+{% if reward_msg %}
+  {% assign reward_cta = "<a href='javascript:void(0)' class='" | append : type  | append : "_learn_more underline'>Learn more</a>" %}
+{% endif %}
+{% if customer %}
+  {% assign reward_cta = "" %}
+{% endif %}
+
+<style>
+  .reward-point-block{background:#ffeda378; color:#6B3500; padding:8px 16px; border-radius:8px; font-size:14px; display:none; flex-flow:row wrap; align-items:center; margin:16px 0; margin-bottom:0; flex-basis: 100%;}
+  .reward-point-block strong{color:#502700}
+  .reward-icon{width:32px; height:32px; flex-shrink:0; flex-grow:0; margin-right:8px;}
+  .reward-icon svg{width:95%;}
+  #__reward_info{flex-grow:1; justify-content: center; line-height:0;}
+  .__cart-page #__reward_info{font-size:calc(13px / 16 * var(--base-body-primary-size) + 0px);}
+  .learn_customTabelPopup__overlay{z-index:99900}
+  .grt-reward-icon{position:relative; display: inline-flex; align-items: center; font-size:14px;}
+  .grt-reward-icon::before{content:""; background:url('https://cdn.shopify.com/s/files/1/0558/0265/8899/files/reward-coin-241125.png?v=1764006639'); width:18px; height:18px; display: inline-block; background-size: 100%;background-size: contain; margin-right:8px;}
+  #cart_reward-point-block .grt-reward-icon{font-size:13px;}
+{% unless customer %}
+  #__reward_info {display: block;}
+{% endunless %}
+  @media(min-width:768px){
+    #__reward_info{display: flex;}
+    .learn_customTabelPopup__overlay .popup-box > div{padding-right:170px;}
+    proceed-to-checkout{display:flex;}
+  }
+  .product-text > upload-controls:not(:last-child){margin-bottom:0;}
+  .grt_payment_icons .payment-terms-extra{margin-top:24px;}
+  .product-text>.grt_payment_icons:not(:last-child){margin-bottom:40px;}
+  /* .step__2.hidden{display:block !important;} */
+</style>
+
+{% liquid
+  if customer
+    assign userstate = "You'll earn&nbsp;"
+  else
+    assign userstate = "Earn up to&nbsp;"
+  endif
+
+  assign rewardmsg = "<span class='grt-reward-icon'>" 
+  assign rewardmsg = rewardmsg | append: userstate | append: "<strong>[_savemoney]</strong>&nbsp;back on this item</span>"
+
+  if type == "cart"
+    assign rewardmsg = "<span class='grt-reward-icon'>" 
+    assign rewardmsg = rewardmsg | append: userstate | append: "<strong>[_savemoney]</strong>&nbsp;back on this order</span>"
+  endif
+%}
+{%liquid 
+  assign grt_reward_enable = false
+  if product.metafields.custom.points_apply
+    assign grt_reward_enable = true
+  endif
+  if type == 'cart'
+    assign grt_reward_enable = true
+  endif
+%}
+
+{% if grt_reward_enable %}
+<div id="{{ type }}_reward-point-block" class="reward-point-block text-center {{ classneed }}" data-reward-msg="{{  rewardmsg }}">
+  <div id="__reward_info"></div>
+</div>
+{% endif %}
+
+<script>
+  var __cartreward = 0;
+  var qty_field = 1;
+  var _bysize = 0;
+  var _dyn_price = {{- product.selected_or_first_available_variant.price| default : 1 -}};
+    $(function(){
+      
+      if(document.querySelector('.customQtyFile__qty')){
+        qty_field = document.querySelector('.customQtyFile__qty').value;  
+      }
+
+      {% if type == "product" %}
+        $(document).on("input keyup change", ".widthHeight__value", function () {
+          _qtyupdate();
+        });
+        
+        $(document).on("input keyup change", ".customQtyFile__qty", function () {
+          _qtyupdate();
+        });
+      {% endif %}
+
+      $(".product__quantity").on("keyup",function(){
+        _qtyupdate();
+      })
+      $(".qty-button").on("click",function(){
+        _qtyupdate();
+      })
+      
+    })
+    {% if type == "product" %}
+    var _grtrewardtotalprice = 0;
+    function _qtyupdate(){
+      
+      if($("line-items-custom .customQtyFile__qty").length > 1){
+        _bysize = 1;
+      }
+      //console.log("_bysize: ",_bysize);
+      if(_bysize == 0){
+        if($(".customTabelPlace__item.selected,.pricesTable__item.selected").length){
+          var _dyn = parseFloat($(".customTabelPlace__item.selected,.pricesTable__item.selected").find("discount").text());
+          _dyn_price = _dyn * 100
+        }
+      }
+      if(_bysize == 1){
+        _grtrewardtotalprice = 0;
+        $("line-items-custom .widthHeight__custom .precut-unit-logic__total .__discountedPrice").each(function(){
+          var grt_text = $(this).text();
+          grt_text = grt_text.replace("$","");
+          var grt_lineprice = grt_text * 1;
+          _grtrewardtotalprice = _grtrewardtotalprice + grt_lineprice
+          //console.log(_grtrewardtotalprice,"grt_intial: ",grt_lineprice,$(this))
+        })
+      }
+      
+      if(document.querySelector('.main-product .customQtyFile__qty')){
+        qty_field = document.querySelector('.main-product .customQtyFile__qty').value;
+      }
+
+      if(document.querySelector('.main-product .product__quantity')){
+        qty_field = document.querySelector('.main-product .product__quantity').value;
+      }
+      
+      {{ type }}__reward_func();  
+    }
+    $(function(){
+      var product_reward = $("#product_reward-point-block").clone(true);
+      if($(".grt-rewardpointinfo").length){
+          $("#product_reward-point-block").remove();
+          var ctrlnode = ".grt-rewardpointinfo"
+          $(ctrlnode).append(product_reward);
+      }else{
+        if($(".customQtyFile").length){
+          //alert("1");
+          $("#product_reward-point-block").remove();
+          var ctrlnode = ".customQtyFile"
+          $(ctrlnode).after(product_reward);
+        } else if($("proceed-to-checkout").length){
+          //alert("2");
+          $("#product_reward-point-block").remove();
+          var ctrlnode = "proceed-to-checkout"
+          $(ctrlnode).after(product_reward);
+        } else if($("product-quantity").length){
+          //alert("3");
+          $("#product_reward-point-block").remove();
+          var ctrlnode = "[data-main-product-add-to-cart]";
+          $(ctrlnode).after(product_reward);
+        } else if($(".gs--wrapper").length){
+          //alert("4");
+          $("#product_reward-point-block").remove();
+          var ctrlnode = ".gs--wrapper";
+          $(ctrlnode).after(product_reward);
+        } else if($(".grt-rewardpointinfo").length){
+          //alert("5");
+          $("#product_reward-point-block").remove();
+          var ctrlnode = ".grt-rewardpointinfo";
+          $(ctrlnode).after(product_reward);
+        } else{
+          //alert("6");
+          $("#product_reward-point-block").addClass("spacingfixed");
+        }
+      }
+    })
+    {% endif %}
+    
+  function {{ type }}__reward_func(){
+      var points_per_dollar = 50;
+      {% if customer %}
+        {%liquid
+          if customer.metafields.klaviyo.swell_vip_tier_name != blank
+            assign tierinfo = customer.metafields.klaviyo.swell_vip_tier_name | downcase
+            case tierinfo
+              when 'white belt'
+                echo "var __point_x = 1;"
+                echo "var __point_price = 0.02;"
+              when 'yellow belt'
+                echo "var __point_x = 1;"
+                echo "var __point_price = 0.04;"
+              when 'blue belt'
+                echo "var __point_x = 1;"
+                echo "var __point_price = 0.06;"
+              else
+                echo "var __point_x = 1;"
+                echo "var __point_price = 0.10;"
+            endcase
+          endif
+        %}
+        var __reward_msg = "{{reward_msg}}";
+      {% else %}
+        var __point_x = 1;
+        var __point_price = 0.10;
+        var __reward_msg = "{{reward_msg}}"; 
+      {% endif %}
+        // Read the reward message from the HTML attribute
+        var reward_msg_holder = document.querySelector('.{{ classneed }}');
+        var __reward_msg = reward_msg_holder ? reward_msg_holder.getAttribute('data-reward-msg') : "Earning [_point] Ninja Rewards Points ([_savemoney])";
+    
+        var __price = _dyn_price;
+    {% if type == "product" %}
+      //console.log("__cartreward: ",__cartreward)
+      __cartreward = 0;
+      if(_bysize == 0){
+        var p__price = _dyn_price
+        var __selected_qty = qty_field || 1;
+        __price = p__price * __selected_qty
+      }
+      if(_bysize == 1){
+        __price = _grtrewardtotalprice * 100
+        //console.log("_grtrewardtotalprice: ",_grtrewardtotalprice)
+      }
+      __price = __price + parseFloat(__cartreward);
+    {% else %}
+      var __price = document.querySelector('#reward_money').value;
+    {% endif %}
+    {% comment %} 
+    {% if customer %}
+      {% if type == "cart" %}
+        __cartreward = __price;
+      {% endif %}
+    {% endif %}
+     {% endcomment %}
+      {% if type == "cart" %}
+        __cartreward = __price;
+      {% endif %}
+      
+        // Calculate reward points and round up if the decimal part is greater than 0.5
+        //console.log("==============================================__point_x:",__point_x,"_bysize: ",_bysize,"__price:",__price,);
+
+        var __reward_point_raw = (__price * __point_x) / 100;
+        var __reward_point = Math.floor(__reward_point_raw) + ((__reward_point_raw % 1) > 0.5 ? 1 : 0);
+        var __product_reward_raw = (__reward_point / points_per_dollar);
+
+        var __reward_price = (__price * __point_price) / 100;
+        var __reward_price_amount = __reward_price.toFixed(2);
+        //console.log("__reward_price:",__reward_price,"| __point_price:",__point_price," | __reward_price_amount:",__reward_price_amount)
+
+
+        var __product_reward = Math.floor(__product_reward_raw) + ((__product_reward_raw % 1) > 0.5 ? 1 : 0);
+        __reward_msg = __reward_msg.replace('[_point]', __reward_point);
+        __reward_msg = __reward_msg.replace('[_savemoney]', "$" +__reward_price_amount);
+    
+      //if(__product_reward > 0){
+        
+        var __reward_info = document.querySelector('.{{ classneed }} #__reward_info');
+        if (__reward_info) {
+          $(__reward_info).html(__reward_msg);
+          document.querySelector(".{{ classneed }}.reward-point-block").style.display = "flex";
+        } else {
+          console.log("Element with id '__reward_info' not found.");
+        }
+      //}
+    }
+  
+  (function() {
+    {% if type == "product" %}
+      $(window).on("load",function(){
+    {% endif %}
+        {{ type }}__reward_func();    
+    {% if type == "product" %}
+      })
+    {% endif %}
+  })();
+</script>
+
+{% if type == "product" %}
+<style>
+  next-element:not(.enablereward) .reward-point-block{display:none !important;}
+
+  .learn_customTabelPopup__overlay .popup-container{max-width: 600px; width:95%; padding: 24px; background: #fff;}
+  .learn_customTabelPopup__overlay .popup-container p{margin-bottom:16px;}
+  @media(min-width:768px){
+    .learn_customTabelPopup__overlay .popup-container{padding: 40px; background: #fff url('https://cdn.shopify.com/s/files/1/0558/0265/8899/files/lil-ninja.jpg?v=1724950215') no-repeat right 39px;
+    min-height: 350px; background-size: 40%; padding-right: 265px;}
+  }
+</style>
+<div class="learn_customTabelPopup__overlay popupoverlay" style="display: none;">
+  <div class="popup-container"> 
+    <span class="popup__close">
+      <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6L18 18" stroke="#000" stroke-linecap="round"></path>
+        <path d="M18 6L6.00001 18" stroke="#000" stroke-linecap="round"></path>
+      </svg>
+    </span>
+    <div class="popup-box">
+      <div>
+        <h3>{{ reward_popuptitle }}</h3>
+        <div class="mrg16">{{ reward_popupmsg }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+  $(function(){
+    var learn_customTabelPopup = $(".learn_customTabelPopup__overlay").clone(true);
+    $(".learn_customTabelPopup__overlay").remove();
+    $("body").append(learn_customTabelPopup);
+    $( document )
+    .on(`click`, `.learn_customTabelPopup__overlay`, function( e ) {
+      $('.learn_customTabelPopup__overlay .popup__close').trigger("click");
+    })
+    .on(`click`, `.learn_customTabelPopup__overlay .popup-container`, function( e ) {
+      e.stopImmediatePropagation();
+    })
+    .on(`click`, `.{{ type }}_learn_more`, function( e ) {
+      try {
+        e.stopImmediatePropagation();
+        const learn_customTabelPopup__overlay = $( `.learn_customTabelPopup__overlay` ).length;
+        if ( learn_customTabelPopup__overlay > 0 ) {
+          $( `.learn_customTabelPopup__overlay` ).fadeIn();
+          $( `body` ).css( `overflow`, `hidden` );
+        }
+      } catch ( err ) {
+        console.log( `ERROR .learn_customTabelPopup__overlay`, err.message );
+      }
+    })
+    .on(`click`, `.popup__close`, function( e ) {
+        try {
+          e.stopImmediatePropagation();
+          $(this).parents(".popupoverlay").fadeOut();
+          $( `body` ).removeAttr( `style` );
+        } catch ( err ) {
+          console.log( `ERROR .popup__close`, err.message );
+        }
+    });
+  })
+</script>
+  {% endif %}

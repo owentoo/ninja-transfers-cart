@@ -1,0 +1,119 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "index.json",
+  "context": {
+    "market": "all-b2b"
+  },
+  "sections": {
+    "1764265568b4b28d05": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "new_hero_WaRfPG": {
+      "disabled": false,
+      "settings": {
+        "showDots": false,
+        "autoPlay": false,
+        "secMarginTop_desktop": 0,
+        "secMarginBottom_desktop": 0,
+        "secPaddingTop_desktop": 0,
+        "secPaddingBottom_desktop": 0,
+        "highlight_word_1": "",
+        "highlight_word_2": "",
+        "highlight_word_3": "",
+        "highlight_word_4": "",
+        "highlight_word_5": "",
+        "highlight_word_6": "",
+        "highlight_word_7": "",
+        "highlight_word_8": ""
+      },
+      "blocks": {
+        "slide_mJdtgH": {
+          "settings": {
+            "subTitle": "",
+            "title": "Welcome to Ninja Transfers Wholesale Portal",
+            "titleFontSize_desktop": 35,
+            "content": "Order transfers in bulk, track your orders, reorder your best sellers — all in one place",
+            "bulletContent": "✔ 20% Off Custom Products\n✔Custom Net Terms\n✔ Free & Fast Delivery",
+            "btnText_3": "My Account/Reorder",
+            "showArrow_mobile_3": false,
+            "btnLink_3": "https://account.ninjatransfers.com/pages/882ee7ee-0fb5-4f14-b74f-c7a11852aa8b",
+            "reviewsImg": null,
+            "reviewsCount": "",
+            "reviewsText": "",
+            "ratingImg": null,
+            "ratingCount": "",
+            "ratingText": "",
+            "timeImg": null,
+            "timeCount": "",
+            "timeText": "",
+            "image": "shopify://shop_images/Vivid-Hero-main.png",
+            "imgHeight_desktop": 460
+          }
+        }
+      }
+    },
+    "new_hero_wi6j9N": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "block_content_TRgERH": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "text_columns_images_mCMNp3": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "ss_image_with_text_8_gtw66w": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "testimonials_home_HbREFf": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "1771017660ba0b655b": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    }
+  },
+  "order": [
+    "hero_banner_rKrFMm",
+    "1764265568b4b28d05",
+    "ss_hero_15_QrCkrw",
+    "new_hero_WaRfPG",
+    "new_hero_wi6j9N",
+    "block_content_TRgERH",
+    "1771017660ba0b655b",
+    "text_columns_images_mCMNp3",
+    "1747843825072ee6f9",
+    "17641772466525ab60",
+    "blocks_rEhyhV",
+    "176530172991cf1430",
+    "media_with_text_overlay_FAzPK4",
+    "blocks_BeYByt",
+    "ss_image_with_text_8_gtw66w",
+    "1765314862cb4294b2",
+    "testimonials_home_HbREFf",
+    "faq_home_CzVrEU",
+    "get_started_yYR4jR",
+    "social_widget_57617",
+    "1749137267b4923ca1"
+  ]
+}

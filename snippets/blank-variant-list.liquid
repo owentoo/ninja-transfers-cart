@@ -1,0 +1,51 @@
+{% assign vtitle = variant.title | split : "/" %}
+{% assign vtitle = vtitle.last %}
+      <div class="flex-item text-center">
+        <div class="variant-price-2" style="display:block;width:65px;">
+          <label
+            class="font-size--down-2 line-height--up-1 large--line-height--down-1 large--font-size--down-1 padding-top--down-3 large--padding-top--down-1 padding-bottom--down-3 font-bold"
+            style="font-weight: 700;"
+          >
+            {{- vtitle -}}
+          </label>
+          {% if variant.inventory_quantity <= 0 %}
+            <div style="border-radius: 4px;display:block;border: 1px solid #e0e0e0;width:100%;color: #000000;padding-top:4px;padding-bottom:4px;background-color: #e1e1e1;height:55px;line-height:45px;">
+              <label>OUT</label>
+            </div>
+          {% else %}
+            <input
+              class="text-center itemQuantity"
+              type="number"
+              min="0"
+              data-id="{{ variant.id }}"
+              data-price="{{ variant.price }}"
+              data-variant-price="{{ variant.price | money_without_currency }}"
+              data-tiers="{{ variant.metafields.custom.tier_pricing }}"
+              data-tp="{{ variant.metafields.custom.tier_pricing | base64_encode }}"
+              data-label="{{ vtitle }}"
+              data-gtin="{{ variant.sku }}"
+              data-max="{{ variant.inventory_quantity }}"
+              placeholder=""
+              value=""
+              style="border-radius: 4px;display:block;padding-top: 1rem;padding-bottom: 1rem; border: 1px solid #e0e0e0;width:100%;margin-bottom:10px;"
+            >
+            <label class="font-size--down-2 line-height--up-1 large--line-height--down-1 large--font-size--down-1 padding-top--down-5 large--padding-top--down-0 font-bold">
+              <small
+                data-variant-id="32449812529212"
+                class="font-size--down-3 large--font-size--down-2 font-bold text-primary variant-price-2 padding-bottom--down-1 label-price"
+                style="color: #03406C;font-size:1.1em;font-weight:700;"
+              >
+                {{- variant.price | money -}}
+              </small>
+            </label>
+            <div style="font-size:0.8em;">
+              {% if variant.inventory_quantity >= 999 %}
+                <div>999+</div>
+              {% else %}
+                <div>{{ variant.inventory_quantity }}</div>
+              {% endif %}
+              <div>In Stock</div>
+            </div>
+          {% endif %}
+        </div>
+      </div>

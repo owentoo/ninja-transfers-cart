@@ -1,0 +1,28 @@
+{%- unless settings.gift_wrap_product == blank -%}
+  <div id="cart-wrapping" class="cart-wrapping cart-gift-widget {{ class }}">
+
+    {%- liquid
+      for item in cart.items
+        if item.product_id == settings.gift_wrap_product.id
+          assign checked = 'checked'
+        endif
+      endfor
+    -%}
+
+    <input data-js-cart-wrapping-checkbox type="checkbox" {{ checked }} class="styled-checkbox nodisplay" id="cart-gift-wrapping" />
+    <label class="checkbox-switch-design" for="cart-gift-wrapping">
+      <i></i>
+      <span>{{ settings.gift_wrap_heading }}</span>
+    </label>
+    {% if hideQuickBuy != true %}
+      <div style="display:none !important">{%- render 'quick-buy', product: settings.gift_wrap_product, default_to_first_variant: true -%}</div>
+    {% else %}
+      {%- assign product = settings.gift_wrap_product -%}
+      <div id="add-to-cart-" class="hidden">
+        {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+          <input type="hidden" name="id" value="{{ settings.gift_wrap_product.selected_or_first_available_variant.id }}">
+        {%- endform -%}
+      </div>
+    {% endif %}
+  </div>
+{%- endunless -%}
