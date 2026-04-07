@@ -1,3 +1,55 @@
+/* ── Upsell "Buy More & Save" banner ──
+   Solid green pill, white text, centered
+── */
+.cart-upsell-dtf-uv-block {
+  background: #27af1a !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 14px 20px !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  text-align: center !important;
+}
+.cart-upsell-dtf-uv-block::before {
+  display: none;
+}
+.cart-upsell-dtf-uv-block .normal-text-content,
+.cart-upsell-dtf-uv-block .max-content-limit,
+.cart-upsell-dtf-uv-block .blankcart {
+  text-align: center !important;
+  margin: 0 !important;
+}
+.cart-upsell-dtf-uv-block .upsell-cta {
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  margin-right: 0 !important;
+}
+.cart-upsell-dtf-uv-block .upsell-cta::after {
+  content: '\2014';
+  margin: 0 6px;
+  font-weight: 400;
+}
+.cart-upsell-dtf-uv-block strong {
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+/* ── Strikethrough price color (all contexts) ── */
+#AjaxCartForm del,
+#site-cart-sidebar del {
+  color: #898989;
+}
+
+/* Slide-out cart background */
+#site-cart-sidebar {
+  background: #f8f9fb;
+}
 /* Cap sidebar at viewport width on small screens */
 @media screen and (max-width: 767px) {
   #site-cart-sidebar {
@@ -69,39 +121,52 @@
 .cart-item__unit-price {
   margin: -0.375rem 0 0.125rem;
 }
-.cart-item__variant {
-  margin-top: 0.25rem;
+/* ── Shared sub-title meta text: 12px across cart page + slide-out ── */
+.cart-item__variant,
+.cart-item__property {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #000;
+  font-weight: 400;
 }
 .cart-item__variant + .cart-item__variant {
-  margin-top: -0.25rem;
+  margin-top: 0;
 }
-.cart-item__property {
-  margin-top: 0.25rem;
+/* Normalize spacing between child lines inside .cart-item__property */
+.cart-item__property > div {
+  margin-top: 0;
+  margin-bottom: 2px;
 }
-@media screen and (max-width: 474px) {
-  .cart-item__property {
-    font-size: calc(
-				11px / 16 * var(--base-body-primary-size) + 0px
-			);
-  }
-}
-@media screen and (min-width: 475px) and (max-width: 1023px) {
-  .cart-item__property {
-    font-size: calc(
-					12px / 16 * var(--base-body-primary-size) + 0px
-				);
-  }
-}
-@media screen and (min-width: 1024px) {
-  .cart-item__property {
-    font-size: calc(
-				13px / 16 * var(--base-body-primary-size) + 0px
-			);
-  }
+.cart-item__property > div:last-child {
+  margin-bottom: 0;
 }
 .cart-item__title {
-  font-weight: var(--font-weight-body-primary-bold);
+  font-weight: 600;
+  font-size: 15px;
   line-height: 1.25;
+}
+/* Desktop: bump sub-text from 12px → 13px (page + slide-out) */
+@media screen and (min-width: 768px) {
+  .cart-item__variant,
+  .cart-item__property,
+  .nt-dg-upload,
+  .nt-dg-qty,
+  .nt-dg-discount,
+  .nt-dg-sizes-count,
+  .nt-dg-precut,
+  .nt-dg-single .nt-size-block,
+  .cart-item__property .options_with_values {
+    font-size: 13px !important;
+  }
+}
+/* Double gap between product name and first sub-text line */
+.cart-item__title + .cart-item__variant,
+.cart-item__title + .cart-item__property,
+.nt-dg-name + .nt-dg-upload,
+.nt-dg-name + .nt-dg-qty,
+.nt-dg-name + .nt-dg-sizes-count {
+  margin-top: 4px;
 }
 .cart-item__actions {
   display: flex !important;
@@ -118,8 +183,8 @@
 }
 .cart-item__actions cart-product-quantity {
   display: flex;
-  border: 1px solid var(--color-borders-forms-primary);
-  border-radius: var(--border-radius-forms);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 10px;
 }
 .cart-item__actions .qty-button {
   line-height: 1;
@@ -149,8 +214,34 @@
   line-height: 1;
   font-size: calc(16px / 16 * var(--base-body-primary-size) + 0px);
 }
+/* ── Remove button: X style ── */
 .cart-item__actions .remove {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  text-decoration: none;
+  flex-shrink: 0;
   line-height: 1;
+  box-sizing: border-box;
+}
+.cart-item__actions .remove svg {
+  display: none;
+}
+.cart-item__actions .remove::after {
+  content: '×';
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--color-text-main);
+  line-height: 1;
+}
+.cart-item__actions .remove:hover::after {
+  color: #666;
 }
 .cart-item__actions .remove:not(:first-child) {
   margin-inline-start: 0.75rem;
@@ -340,9 +431,11 @@ html[dir=ltr] .cart-notice__slider-bar {
 /* ── Slide-out cart: design group parent/child layout ── */
 #site-cart-sidebar .nt-design-group {
   margin-bottom: 0;
-  border: 1.5px solid #e8e8e8;
-  border-radius: 10px;
+  border: 1px solid rgba(226,232,240,0.6);
+  border-radius: 16px;
   overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 #site-cart-sidebar .nt-design-group + .nt-design-group,
 #site-cart-sidebar .nt-design-group + .cart-item,
@@ -361,7 +454,7 @@ html[dir=ltr] .cart-notice__slider-bar {
   gap: 10px;
   padding: 12px;
   background: #fff;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 /* Thumbnail */
@@ -400,7 +493,7 @@ html[dir=ltr] .cart-notice__slider-bar {
 #site-cart-sidebar .nt-dg-name {
   display: block;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   color: #111;
   white-space: nowrap;
   overflow: hidden;
@@ -408,21 +501,21 @@ html[dir=ltr] .cart-notice__slider-bar {
 }
 #site-cart-sidebar .nt-dg-upload {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   margin-top: 2px;
 }
 #site-cart-sidebar .nt-dg-qty {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   margin-top: 2px;
 }
 #site-cart-sidebar .nt-dg-discount {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   margin-top: 2px;
@@ -431,7 +524,7 @@ html[dir=ltr] .cart-notice__slider-bar {
 /* Precut label */
 #site-cart-sidebar .nt-dg-precut {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   margin-top: 2px;
@@ -439,7 +532,7 @@ html[dir=ltr] .cart-notice__slider-bar {
 /* Sizes count */
 #site-cart-sidebar .nt-dg-sizes-count {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #000;
   margin-top: 2px;
@@ -463,19 +556,19 @@ html[dir=ltr] .cart-notice__slider-bar {
   justify-content: flex-start;
 }
 #site-cart-sidebar .nt-dg-price-orig {
-  font-size: 11px;
+  font-size: 12px;
   margin-bottom: 2px;
 }
 #site-cart-sidebar .nt-dg-price-orig del {
-  color: #888;
+  /* color inherited from global del rule at top of file */
 }
 #site-cart-sidebar .nt-dg-price-final strong {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* ── Child rows inside design group ── */
 #site-cart-sidebar .nt-design-group .nt-child-row {
-  background: #fafafa;
+  background: #fff;
   margin-top: 0 !important;
 }
 #site-cart-sidebar .nt-design-group .nt-child-row + .nt-child-row {
@@ -569,7 +662,7 @@ html[dir=ltr] .cart-notice__slider-bar {
   min-width: 5rem; text-align: right;
 }
 #site-cart-sidebar .nt-dg-single .nt-size-block {
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 2px;
 }
 #site-cart-sidebar .nt-dg-single .nt-edit-size-btn {
@@ -581,10 +674,12 @@ html[dir=ltr] .cart-notice__slider-bar {
    section-main-cart.css isn't loaded in the sidebar, so we provide the full
    grid definition here instead of just overrides. */
 #site-cart-sidebar .nt-flat-card {
-  border: 1.5px solid #e8e8e8;
-  border-radius: 10px;
+  border: 1px solid rgba(226,232,240,0.6);
+  border-radius: 16px;
   overflow: hidden;
   padding: 0;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 /* Full grid definition — mirrors cart page mobile layout */
 #site-cart-sidebar .nt-flat-card .cart-form-item--layout {
@@ -634,4 +729,36 @@ html[dir=ltr] .cart-notice__slider-bar {
 #site-cart-sidebar .nt-design-group + .nt-flat-card,
 #site-cart-sidebar .nt-flat-card + .nt-design-group {
   margin-top: 8px;
+}
+
+/* ── Sidebar restyle: structural refinements ── */
+
+/* Header: match page bg + soften divider */
+#site-cart-sidebar .sidebar__header {
+  background: #f8f9fb;
+  border-bottom-color: #f0f0f0;
+}
+
+/* Body section dividers: soften */
+#site-cart-sidebar .sidebar__body > * + div {
+  border-top-color: #f0f0f0;
+}
+
+/* Footer: match page bg + soften divider */
+#site-cart-sidebar .sidebar__footer {
+  background: #f8f9fb;
+  border-top-color: #f0f0f0;
+}
+
+/* Footer sticky shadow: soften heavy drop shadow */
+#site-cart-sidebar .block-bottom {
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.06) !important;
+}
+
+/* Variant option labels */
+#site-cart-sidebar .cart-item__property .options_with_values {
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #000;
 }

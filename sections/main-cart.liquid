@@ -150,13 +150,67 @@
 
 <!-- Edit Size button + block styles -->
 <style>
+  /* ── Cart page background ── */
+  body.template-cart { background: #f8f9fb; }
+
+  /* ── Shared card style: white, rounded, soft shadow, no border ── */
+  .nt-card-style {
+    background: #fff;
+    border: none !important;
+    border-radius: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  /* ── Unified sub-title meta text (12px everywhere) ── */
+  .cart-item__variant,
+  .cart-item__property,
+  .cart-item__property .options_with_values,
+  .nt-dg-upload,
+  .nt-dg-qty,
+  .nt-dg-discount,
+  .nt-dg-sizes-count,
+  .nt-dg-precut {
+    font-size: 12px !important;
+    line-height: 1.4;
+    font-weight: 400;
+    color: #000;
+  }
+  .cart-item__title,
+  .nt-dg-name {
+    font-size: 15px !important;
+    font-weight: 600;
+    color: #111;
+  }
+
+  /* ── Right sidebar card treatment ── */
+  /* Shipping progress bars */
+  .sidebar-widget__content.fullpage-cart {
+    border: 1px solid rgba(226,232,240,0.6) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    background: #fff;
+  }
+  /* JTL + Checkout combined block */
+  .cart-page-card .sidebar-widget__content {
+    border: 1px solid rgba(226,232,240,0.6) !important;
+    border-radius: 16px 16px 0 0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .cart__subtotal-widget {
+    border: 1px solid rgba(226,232,240,0.6) !important;
+    border-top: none !important;
+    border-radius: 0 0 16px 16px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    background: #fff;
+  }
+
   /* Green upsell banner padding */
   .cart-upsell-dtf-uv-block.upsell-cartinfo-cartpage { padding:18px; }
   /* Hide qty stepper for Jump the Line & Pre-cut Option (keep trash) */
   [data-product-id="6947128901715"] product-quantity,
   [data-product-id="7578022281299"] product-quantity { display:none !important; }
   /* Flat (non-grouped) cart items */
-  .cart-form__items > .cart-form-item { margin-bottom:12px; border:1.5px solid #e8e8e8; border-radius:10px; overflow:hidden; }
+  .cart-form__items > .cart-form-item { margin-bottom:12px; border:1px solid rgba(226,232,240,0.6); border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
   /* Match flat card padding to parent header — desktop: gutter-regular, ≤1100px: gutter-small, mobile: 16px */
   .cart-form__items > .cart-form-item .cart-form-item--layout { padding:var(--gutter-regular) !important; }
   .cart-form__items > .cart-form-item .cart-item__actions { margin-top: 0 !important; }
@@ -180,9 +234,9 @@
   .cart-form__items > [data-product-id="6947128901715"] .cart-form-item--layout,
   .cart-form__items > [data-product-id="7578022281299"] .cart-form-item--layout { padding:16px !important; }
   /* Design group parent/child */
-  .nt-design-group { margin-bottom:12px; border:1.5px solid #e8e8e8; border-radius:10px; overflow:hidden; }
+  .nt-design-group { margin-bottom:12px; border:1px solid rgba(226,232,240,0.6); border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
   /* Parent header — same grid as flat cards */
-  .nt-dg-header { display:grid; align-items:center; gap:var(--gutter-regular); padding:var(--gutter-regular); background:#fff; border-bottom:1px solid #e8e8e8;
+  .nt-dg-header { display:grid; align-items:center; gap:var(--gutter-regular); padding:var(--gutter-regular); background:#fff; border-bottom:1px solid #f0f0f0;
     grid-template-columns: 6.25rem 18.75rem 1fr 10rem;
     grid-template-areas: "thumbnail info actions total";
   }
@@ -220,10 +274,8 @@
   .nt-dg-thumb { background-image:linear-gradient(45deg,#e8e8e8 25%,transparent 25%),linear-gradient(-45deg,#e8e8e8 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e8e8e8 75%),linear-gradient(-45deg,transparent 75%,#e8e8e8 75%); background-size:8px 8px; background-position:0 0,0 4px,4px -4px,-4px 0; background-color:#fff; }
   .nt-dg-thumb img { width:calc(100% - 16px); height:calc(100% - 16px); margin:8px; object-fit:contain; object-position:50% 50%; display:block; vertical-align:middle; opacity:1; }
   .nt-dg-info { grid-area:info; min-width:0; }
-  .nt-dg-sizes-count { font-size: calc(13px / 16 * var(--base-body-primary-size) + 0px); margin-top:2px; display:block; }
-  .nt-dg-sizes-count strong { font-size:15px; font-weight:600; }
-  @media screen and (max-width:474px){ .nt-dg-sizes-count { font-size: calc(11px / 16 * var(--base-body-primary-size) + 0px); } }
-  @media screen and (min-width:475px) and (max-width:1023px){ .nt-dg-sizes-count { font-size: calc(12px / 16 * var(--base-body-primary-size) + 0px); } }
+  .nt-dg-sizes-count { font-size: 12px !important; margin-top:2px; display:block; }
+  .nt-dg-sizes-count strong { font-size:12px; font-weight:600; }
   .nt-dg-actions { grid-area:actions; }
   .nt-dg-total { grid-area:total; }
   /* Single-size card: slot into header grid */
@@ -232,16 +284,16 @@
   .nt-dg-solo-controls.cart-item__actions .qty-selector { height:1.875rem; }
   .nt-dg-solo-price { grid-area:total; }
   /* Match child-row property font size on single-size card */
-  .nt-dg-single .nt-size-block { font-size: calc(13px / 16 * var(--base-body-primary-size) + 0px); margin-top:2px; }
-  @media screen and (max-width:474px){ .nt-dg-single .nt-size-block { font-size: calc(11px / 16 * var(--base-body-primary-size) + 0px); } }
-  @media screen and (min-width:475px) and (max-width:1023px){ .nt-dg-single .nt-size-block { font-size: calc(12px / 16 * var(--base-body-primary-size) + 0px); } }
+  .nt-dg-single .nt-size-block { font-size: 12px !important; margin-top:2px; }
   .nt-dg-name { display:block; font-weight:600; font-size:15px; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .nt-dg-qty { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-dg-qty { display:block; font-size:12px; font-weight:400; color:#000; margin-top:2px; }
   .nt-add-size-btn { background:none; border:none; color:#019AFF; padding:0; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; flex-shrink:0; touch-action:manipulation; text-decoration:none; }
   .nt-add-size-btn:hover { color:#0077cc; }
-  .nt-add-size-footer { padding:12px var(--gutter-regular); border-top:1px solid #f0f0f0; background:#fafafa; text-align:left; }
+  .nt-add-size-footer { padding:12px var(--gutter-regular); border-top:1px solid #f0f0f0; background:#fff; text-align:left; }
   @media screen and (max-width:1100px) { .nt-add-size-footer { padding:12px var(--gutter-small); } }
   @media (max-width:767px) { .nt-add-size-footer { padding:12px 16px; } }
+  /* Kill theme's default cart-form-item border inside design groups */
+  .nt-design-group > .cart-form-item { border-bottom:none; }
   /* Divider between child rows (correct selector: .cart-form-item is the direct child) */
   .nt-design-group > .cart-form-item + .cart-form-item { border-top:1px solid #f0f0f0; }
   /* At mobile the theme zeroes all .cart-form-item borders — restore for child rows */
@@ -274,23 +326,23 @@
     .nt-design-group .cart-form-item .cart-item__actions { padding-top: 0 !important; }
   }
   /* Child rows get the gray background */
-  .nt-design-group .cart-form-item { background:#fafafa; }
+  .nt-design-group .cart-form-item { background:#fff; }
   /* Remove default margin-top on actions so content is evenly centered in the row */
   .nt-design-group .cart-form-item .cart-item__actions { margin-top: 0 !important; }
   /* Hide thumbnail, product title, upload preview on child rows — parent header shows them */
   .nt-design-group .cart-form-item .cart-item__thumbnail { display:none; }
   .nt-design-group .cart-form-item .cart-item__title { display:none; }
   .nt-design-group .cart-form-item .nt-upload-preview-row { display:none; }
-  .nt-dg-upload { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-dg-upload { display:block; font-size:12px; font-weight:400; color:#000; margin-top:2px; }
   .nt-dg-price-orig { font-size:12px; margin-bottom:2px; }
-  .nt-dg-price-orig del { color:#888; }
-  .nt-dg-discount { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
-  .nt-dg-precut { display:block; font-size:12.1875px; font-weight:400; color:#000; margin-top:2px; }
+  /* del color inherited from component-cart.css global rule */
+  .nt-dg-discount { display:block; font-size:12px; font-weight:400; color:#000; margin-top:2px; }
+  .nt-dg-precut { display:block; font-size:12px; font-weight:400; color:#000; margin-top:2px; }
   /* Hide per-child discount labels — discount is shown once on the parent header */
   .nt-design-group .cart-form-item .promoCoupen,
   .nt-design-group .cart-form-item .nonePromoCoupen { display:none !important; }
   .nt-size-block { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
-  .nt-size-block > span > strong { font-size:15px; font-weight:600; }
+  .nt-size-block > span > strong { font-size:12px; font-weight:600; }
   .nt-edit-size-btn {
     background: none; border: none; padding: 0;
     font-size: inherit; font-weight: bold; cursor: pointer;
